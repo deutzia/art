@@ -2,3 +2,5 @@ venv/
 main
 pictures/
 TODO
+build/
+.tup/

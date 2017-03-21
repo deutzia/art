@@ -1,0 +1,8 @@
+CPPFLAGS += -I$HOME/science/programming/libraries/art/libraries
+CPPFLAGS += -lpthread -lsfml-graphics -lsfml-window -lsfml-system -std=c++11 -O2
+CPPFLAGS += -W -Wall -Wextra -Wpedantic
+COMPILER = g++
+
+:foreach sources/*.cc |> $(COMPILER) $(CPPFLAGS) -c %f -o %o |> build/%B.o
+:main.cc |> $(COMPILER) $(CPPFLAGS) -c %f -o %o |> build/%B.o
+:build/*.o |> $(COMPILER) $(CPPFLAGS) %f -o %o |> main
