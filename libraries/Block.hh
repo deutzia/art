@@ -144,7 +144,8 @@ void Input<Type>::Update(uint32_t time)
 {
 	if (out == nullptr)
 	{
-		parent->logger->Log(Logger::LogLevel::Error)<<"Updating input not connected to any output";
+		parent->logger->Log(Logger::LogLevel::Error)
+			<<"Updating input not connected to any output";
 		throw "Updating input not connected to any output";
 	}
 	if (out->GetVisitTimestamp() < time)
@@ -157,7 +158,8 @@ template <typename Type>
 uint32_t Input<Type>::GetChangeTimestamp()
 {
 	if (out-> parent != nullptr)
-		return std::max(connection_timestamp, out->parent->computation_timestamp);
+		return std::max(connection_timestamp,
+			out->parent->computation_timestamp);
 	return connection_timestamp;
 }
 
@@ -182,7 +184,8 @@ Type Input<Type>::GetData()
 {
 	if (out == nullptr)
 	{
-		parent->logger->Log(Logger::LogLevel::Error)<<"getting data from input not connected to any output";
+		parent->logger->Log(Logger::LogLevel::Error)
+			<<"getting data from input not connected to any output";
 		throw "getting data from input not connected to any output";
 	}
 	return out->shared_future.get();
