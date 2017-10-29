@@ -32,15 +32,16 @@ template <typename Type>
 class Input: public InputMeta
 {
 private:
-	Output<Type> *out;
+	Output<Type>* out;
 	uint32_t connection_timestamp;
-	Block * parent;
+	Block* parent;
 protected:
 	virtual void Update(uint32_t time) override;
 	virtual uint32_t GetChangeTimestamp() override;
 public:
-	void Connect(Output<Type> *_out);
-	Input(Block * _parent);
+	void Connect(Output<Type>* _out);
+	Input(Block* _parent);
+	Input(const Input& other) = delete;
 	Type GetData();
 };
 
@@ -67,10 +68,10 @@ private:
 	uint32_t computation_timestamp;
 protected:
 	std::string name;
-	Logger * logger;
+	Logger* logger;
 	virtual void Compute() = 0;
 	template <typename Type>
-	void SetData(Output<Type> * _out, Type data)
+	void SetData(Output<Type>* _out, Type data)
 	{
 		if (_out->parent != this)
 		{
@@ -83,12 +84,13 @@ protected:
 public:
 	void ManualUpdate(uint32_t time = GlobalTimestamp());
 	static bool multithreading;
-	Block(std::string _name, Logger * _logger)
+	Block(std::string _name, Logger* _logger)
 	: name(_name)
 	, logger(_logger)
 	, visit_timestamp(0)
 	, computation_timestamp(0)
 	{};
+	Block (const Block& other) = delete;
 };
 
 template <typename Type>
@@ -98,8 +100,8 @@ class Output: public OutputMeta
 	template <typename TType>
 	friend class Input;
 private:
-	Block * parent;
-	std::promise<Type> * data_promise;
+	Block* parent;
+	std::promise<Type>* data_promise;
 	std::future<Type> future;
 	std::shared_future<Type> shared_future;
 protected:
@@ -111,7 +113,8 @@ protected:
 		return parent->visit_timestamp;
 	}
 public:
-	Output(Block * _parent);
+	Output(Block* _parent);
+	Output(const Output& other) = delete;
 };
 
 template <typename Type>
@@ -142,6 +145,7 @@ public:
 	{
 		SetDataManually(t);
 	}
+	ManualInput(const ManualInput& other) = delete;
 };
 
 template <typename Type>
@@ -169,14 +173,14 @@ uint32_t Input<Type>::GetChangeTimestamp()
 }
 
 template <typename Type>
-void Input<Type>::Connect(Output<Type> * _out)
+void Input<Type>::Connect(Output<Type>* _out)
 {
 	out = _out;
 	connection_timestamp = GlobalTimestamp();
 }
 
 template <typename Type>
-Input<Type>::Input(Block * _parent)
+Input<Type>::Input(Block* _parent)
 {
 	parent = _parent;
 	out = nullptr;
@@ -219,7 +223,7 @@ void Output<Type>::SetData(Type t)
 }
 
 template <typename Type>
-Output<Type>::Output(Block * _parent)
+Output<Type>::Output(Block* _parent)
 {
 	parent = _parent;
 	if (parent != nullptr)

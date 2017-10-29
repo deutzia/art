@@ -24,7 +24,7 @@ void ImageDrawer::Compute()
 	logger->Exit();
 }
 
-ImageDrawer::ImageDrawer(std::string _name, Logger * _logger)
+ImageDrawer::ImageDrawer(std::string _name, Logger* _logger)
 : Block(_name, _logger)
 {
 	picture = new Input<sf::Texture>(this);

@@ -18,7 +18,7 @@ std::map<Logger::LogLevel, std::string> Logger::message_headers = {
 
 std::mutex Logger::logger_is_writing;
 
-Logger::Logger(std::ostream * _out)
+Logger::Logger(std::ostream* _out)
 {
 	writing_to_file = false;
 	logger_out = _out;
@@ -59,7 +59,7 @@ void Logger::StreamWrapper::StartLogging()
 		(*s) <<" ";
 }
 
-Logger::StreamWrapper::StreamWrapper(Logger * _parent, Logger::LogLevel _level)
+Logger::StreamWrapper::StreamWrapper(Logger* _parent, Logger::LogLevel _level)
 {
 	parent = _parent;
 	message_level = _level;
@@ -114,7 +114,7 @@ Logger::StreamWrapper Logger::Log(Logger::LogLevel _level)
 }
 
 
-Logger::Progress::Progress (int _start, int _end, int _step, int _number_of_updates, int _count, Logger * _parent, Logger::LogLevel _level)
+Logger::Progress::Progress (int _start, int _end, int _step, int _number_of_updates, int _count, Logger* _parent, Logger::LogLevel _level)
 : parent(_parent)
 , start(_start)
 , end(_end)
@@ -170,7 +170,7 @@ void Logger::SetDefaultMessageLevel(Logger::LogLevel _level)
 	message_level = _level;
 }
 
-void Logger::SetNewOutput(std::ostream * _out)
+void Logger::SetNewOutput(std::ostream* _out)
 {
 	if (writing_to_file)
 		file.close();

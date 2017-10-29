@@ -4,11 +4,11 @@
 
 class ImageDrawer: public Block
 {
-	sf::RenderWindow * window;
+	sf::RenderWindow* window;
 public:
 	Input<sf::Texture>* picture;
 protected:
 	virtual void Compute() override;
 public:
-	ImageDrawer(std::string _name, Logger * _logger);
+	ImageDrawer(std::string _name, Logger* _logger);
 };

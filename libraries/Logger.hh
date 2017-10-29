@@ -24,12 +24,12 @@ private:
 	class StreamWrapper
 	{
 	private:
-		std::ostringstream * s;
-		Logger * parent;
+		std::ostringstream* s;
+		Logger* parent;
 		void StartLogging();
 		LogLevel message_level;
 	public:
-		StreamWrapper(Logger * _parent, LogLevel _level);
+		StreamWrapper(Logger* _parent, LogLevel _level);
 		StreamWrapper(StreamWrapper && other);
 		template <typename Type> std::ostringstream & operator<<(Type x)
 		{
@@ -41,7 +41,7 @@ private:
 	class Progress
 	{
 	private:
-		Logger * parent;
+		Logger* parent;
 		int start;
 		int end;
 		int step;
@@ -54,7 +54,7 @@ private:
 		void Count();
 	};
 	bool writing_to_file;
-	std::ostream * logger_out;
+	std::ostream* logger_out;
 	std::ofstream file;
 	int spaces_at_the_begining;
 	LogLevel logger_level;
@@ -64,7 +64,7 @@ private:
 	static std::mutex logger_is_writing;
 	std::vector<std::string> entered_stuff;
 public:
-	Logger(std::ostream *_out = &std::cout);
+	Logger(std::ostream* _out = &std::cout);
 	Logger(std::string _file);
 	~Logger();
 	StreamWrapper Log();
@@ -73,7 +73,7 @@ public:
 	Progress InitializeProgress(LogLevel _level, int _start, int _end, int _step = 1, int _updates = 10);
 	void SetLoggerLevel(LogLevel _level);
 	void SetDefaultMessageLevel(LogLevel _level);
-	void SetNewOutput(std::ostream * _out);
+	void SetNewOutput(std::ostream* _out);
 	void SetNewOutput(std::string _file);
 	void Enter(std::string _info);
 	void Exit();

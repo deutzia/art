@@ -9,5 +9,5 @@ public:
 protected:
 	virtual void Compute() override;
 public:
-	ImageLoader(std::string _name, Logger *  _logger);
+	ImageLoader(std::string _name, Logger*  _logger);
 };

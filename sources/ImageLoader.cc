@@ -13,7 +13,7 @@ void ImageLoader::Compute()
 	logger->Exit();
 }
 
-ImageLoader::ImageLoader(std::string _name, Logger * _logger)
+ImageLoader::ImageLoader(std::string _name, Logger* _logger)
 : Block(_name, _logger)
 {
 	file = new Input<std::string>(this);
