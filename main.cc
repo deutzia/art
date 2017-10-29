@@ -10,8 +10,7 @@ int main(int argc, char *argv[])
 		logger.Log(Logger::LogLevel::Error) <<"need a file";
 		return -1;
 	}
-	ManualInput<std::string> file;
-	file.SetDataManually(std::string(argv[1]));
+	ManualInput<std::string> file(argv[1]);
 	ImageLoader loader("loader", &logger);
 	ImageDrawer drawer("drawer", &logger);
 	loader.file->Connect(&file);
