@@ -137,6 +137,11 @@ public:
 	ManualInput()
 	: Output<Type>(nullptr)
 	{}
+	ManualInput(Type t)
+	: Output<Type>(nullptr)
+	{
+		SetDataManually(t);
+	}
 };
 
 template <typename Type>
