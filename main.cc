@@ -2,6 +2,7 @@
 #include "ImageLoader.hh"
 #include "ImageDrawer.hh"
 #include "ImageSaver.hh"
+#include "RandomTriangles.hh"
 
 int main(int argc, char* argv[])
 {
@@ -18,7 +19,7 @@ int main(int argc, char* argv[])
 
 	ImageDrawer drawer("test_drawer", &logger);
 	drawer.picture->Connect(loader.out);
-	drawer.ManualUpdate();
+	//drawer.ManualUpdate();
 
 	ImageSaver saver("test_saver", &logger);
 	saver.picture->Connect(loader.out);
@@ -26,7 +27,11 @@ int main(int argc, char* argv[])
 	path_out.insert(path_out.size()-4, "_save_test");
 	ManualInput<std::string> file_out(path_out);
 	saver.path->Connect(&file_out);
-	saver.ManualUpdate();
+	//saver.ManualUpdate();
+
+	RandomTriangles randtris("test_randtris", &logger);
+	randtris.input_image->Connect(loader.out);
+	randtris.ManualUpdate();
 
 	return 0;
 }
