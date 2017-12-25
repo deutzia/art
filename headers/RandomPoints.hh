@@ -1,6 +1,8 @@
+#pragma once
 #include <SFML/Graphics.hpp>
 #include <vector>
 #include "Block.hh"
+#include "Tools.hh"
 
 class RandomPoints: public Block
 {
