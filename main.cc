@@ -3,6 +3,7 @@
 #include "ImageDrawer.hh"
 #include "ImageSaver.hh"
 #include "RandomTriangles.hh"
+#include "TrianglesToTexture.hh"
 #include "PointsDrawer.hh"
 #include "RandomPoints.hh"
 
@@ -20,8 +21,16 @@ int main(int argc, char* argv[])
 	ManualInput<std::string> file_in(argv[1]);
 	loader.file->Connect(&file_in);
 
-	// RandomTriangles randtris("test_randtris", &logger);
-	// randtris.size->Connect(loader.size);
+	RandomTriangles randtris("test_randtris", &logger);
+	randtris.size->Connect(loader.size);
+
+	TrianglesToTexture tristotex("test_tristotex", &logger);
+	tristotex.input_size->Connect(loader.size);
+	tristotex.input_triangles->Connect(randtris.triangles);
+
+	ImageDrawer drawer("test_drawer", &logger);
+	drawer.picture->Connect(tristotex.output_texture);
+	drawer.ManualUpdate();
 
 	// ImageSaver saver("test_saver", &logger);
 	// saver.picture->Connect(randtris.output_image);

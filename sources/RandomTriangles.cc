@@ -43,29 +43,13 @@ void RandomTriangles::Compute()
 		tris.push_back(t3);
 	}
 
-	//for debugging:
-	// sf::RenderWindow window(sf::VideoMode(x, y), "triangles");
-	// for (auto &tri: tris)
-	// 	tri.SetColor(sf::Color(random_float(0,255), random_float(0,255), random_float(0,255)));
+	for (Triangle &tri: tris)
+		tri.SetColor(sf::Color(random_float(0,255), random_float(0,255), random_float(0,255)));
 
-	// while(window.isOpen())
-	// {
-	// 	sf::Event event;
-	// 	while (window.pollEvent(event))
-	// 	{
-	// 		if (event.type == sf::Event::Closed)
-	// 			window.close();
-	// 	}
-	// 	window.clear(sf::Color::Black);
-	// 	for (auto tri: tris)
-	// 		window.draw(tri);
-	// 	window.display();
-	// }
 	std::vector<Triangle> tris_vec;
-	for (auto tri: tris)
+	for (Triangle &tri: tris)
 		tris_vec.push_back(tri);
 	SetData(triangles, tris_vec);
-	logger->Exit();
 }
 
 RandomTriangles::RandomTriangles(std::string _name, Logger* _logger)
