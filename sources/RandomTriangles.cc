@@ -5,9 +5,9 @@ void RandomTriangles::Compute()
 {
 	logger->Enter("Computing Block RandomTriangles");
 
-	sf::Vector2u s = size->GetData();
-	int x = s.x;
-	int y = s.y;
+	sf::Vector2u size = in_size->GetData();
+	int x = size.x;
+	int y = size.y;
 
 	std::list<Triangle> tris;
 	// random point inside instead?
@@ -49,12 +49,12 @@ void RandomTriangles::Compute()
 	std::vector<Triangle> tris_vec;
 	for (Triangle &tri: tris)
 		tris_vec.push_back(tri);
-	SetData(triangles, tris_vec);
+	SetData(out_triangles, tris_vec);
 }
 
 RandomTriangles::RandomTriangles(std::string _name, Logger* _logger)
 : Block(_name, _logger)
 {
-	size = new Input<sf::Vector2u>(this);
-	triangles = new Output<std::vector<Triangle>>(this);
+	in_size = new Input<sf::Vector2u>(this);
+	out_triangles = new Output<std::vector<Triangle>>(this);
 }

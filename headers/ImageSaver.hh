@@ -5,9 +5,9 @@
 class ImageSaver: public Block
 {
 public:
-	Input<sf::Texture>* picture;
+	Input<sf::Texture>* in_picture;
 	/* Path to save the image file, including the filename and extension */
-	Input<std::string>* path;
+	Input<std::string>* in_path;
 protected:
 	virtual void Compute() override;
 public:

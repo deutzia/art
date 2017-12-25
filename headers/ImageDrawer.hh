@@ -7,7 +7,7 @@ class ImageDrawer: public Block
 {
 	sf::RenderWindow* window;
 public:
-	Input<sf::Texture>* picture;
+	Input<sf::Texture>* in_picture;
 protected:
 	virtual void Compute() override;
 public:

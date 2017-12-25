@@ -7,8 +7,8 @@ class PointsDrawer: public Block
 {
 	sf::RenderWindow* window;
 public:
-	Input<std::vector<sf::Vector2f> >* points;
-	Input<sf::Vector2u>* size;
+	Input<std::vector<sf::Vector2f> >* in_points;
+	Input<sf::Vector2u>* in_size;
 protected:
 	virtual void Compute() override;
 public:

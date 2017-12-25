@@ -18,26 +18,26 @@ int main(int argc, char* argv[])
 	}
 	
 	ImageLoader loader("test_loader", &logger);
-	ManualInput<std::string> file_in(argv[1]);
-	loader.file->Connect(&file_in);
+	ManualInput<std::string> in_file(argv[1]);
+	loader.in_file->Connect(&in_file);
 
 	RandomTriangles randtris("test_randtris", &logger);
-	randtris.size->Connect(loader.size);
+	randtris.in_size->Connect(loader.out_size);
 
 	TrianglesToTexture tristotex("test_tristotex", &logger);
-	tristotex.input_size->Connect(loader.size);
-	tristotex.input_triangles->Connect(randtris.triangles);
+	tristotex.in_size->Connect(loader.out_size);
+	tristotex.in_triangles->Connect(randtris.out_triangles);
 
 	ImageDrawer drawer("test_drawer", &logger);
-	drawer.picture->Connect(tristotex.output_texture);
-	drawer.ManualUpdate();
+	drawer.in_picture->Connect(tristotex.out_texture);
+	// drawer.ManualUpdate();
 
-	// ImageSaver saver("test_saver", &logger);
-	// saver.picture->Connect(randtris.output_image);
+	ImageSaver saver("test_saver", &logger);
+	saver.in_picture->Connect(tristotex.out_texture);
 
-	// ManualInput<std::string> savepath("pictures/bichon_save_test.jpg");
-	// saver.path->Connect(&savepath);
-	// saver.ManualUpdate();
+	ManualInput<std::string> savepath("pictures/bichon_save_test.jpg");
+	saver.in_path->Connect(&savepath);
+	saver.ManualUpdate();
 
 	return 0;
 }

@@ -3,7 +3,7 @@
 void ImageDrawer::Compute()
 {
 	logger->Enter("Computing Block ImageDrawer");
-	sf::Texture texture = picture->GetData();
+	sf::Texture texture = in_picture->GetData();
 	sf::Sprite sprite;
 	sprite.setTexture(texture);
 	auto size = texture.getSize();
@@ -27,6 +27,6 @@ void ImageDrawer::Compute()
 ImageDrawer::ImageDrawer(std::string _name, Logger* _logger)
 : Block(_name, _logger)
 {
-	picture = new Input<sf::Texture>(this);
+	in_picture = new Input<sf::Texture>(this);
 	window = new sf::RenderWindow();
 }
