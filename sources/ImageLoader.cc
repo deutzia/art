@@ -9,7 +9,8 @@ void ImageLoader::Compute()
 		logger->Log(Logger::LogLevel::Error) << "Failed to open file " <<file->GetData();
 		throw std::string("Failed to open file ")+(file->GetData());
 	}
-	SetData(out, std::move(texture));
+	SetData(size, texture.getSize());
+	SetData(picture, std::move(texture));
 	logger->Exit();
 }
 
@@ -17,6 +18,7 @@ ImageLoader::ImageLoader(std::string _name, Logger* _logger)
 : Block(_name, _logger)
 {
 	file = new Input<std::string>(this);
-	out = new Output<sf::Texture>(this);
+	picture = new Output<sf::Texture>(this);
+	size = new Output<sf::Vector2u>(this);
 }
 
