@@ -4,7 +4,7 @@ void RandomPoints::Compute()
 {
 	logger->Enter("Computing Block RandomPoints");
 	std::vector<sf::Vector2f> result;
-	sf::Vector2u bounds = size->GetData();
+	sf::Vector2u bounds = in_size->GetData();
 	result.emplace_back(0.0, 0.0);
 	result.emplace_back(0.0, bounds.y);
 	result.emplace_back(bounds.x, 0.0);
@@ -18,6 +18,6 @@ void RandomPoints::Compute()
 RandomPoints::RandomPoints(std::string _name, Logger* _logger)
 : Block(_name, _logger)
 {
-	size = new Input<sf::Vector2u>(this);
-	points = new Output<std::vector<sf::Vector2f> >(this);
+	in_size = new Input<sf::Vector2u>(this);
+	out_points = new Output<std::vector<sf::Vector2f> >(this);
 }
