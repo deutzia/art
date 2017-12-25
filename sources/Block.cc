@@ -1,6 +1,6 @@
 #include "Block.hh"
 
-bool Block::multithreading(true);
+bool Block::multithreading(false);
 
 void Block::Update(uint32_t time)
 {

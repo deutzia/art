@@ -5,7 +5,8 @@ class ImageLoader: public Block
 {
 public:
 	Input<std::string>* file;
-	Output<sf::Texture>* out;
+	Output<sf::Texture>* picture;
+	Output<sf::Vector2u>* size;
 protected:
 	virtual void Compute() override;
 public:
