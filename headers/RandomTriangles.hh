@@ -6,8 +6,7 @@
 class RandomTriangles: public Block
 {
 public:
-	/* A picture for size reference */
-	Input<sf::Texture>* input_image;
+	Input<sf::Vector2u>* size;
 
 	/* List of triangles */
 	Output<std::vector<Triangle>>* triangles;

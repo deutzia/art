@@ -37,44 +37,9 @@ int main(int argc, char* argv[])
 	ManualInput<std::string> file_in(argv[1]);
 	loader.file->Connect(&file_in);
 
-	ImageDrawer drawer("test_drawer", &logger);
-	drawer.picture->Connect(loader.out);
-	//drawer.ManualUpdate();
-
-	ImageSaver saver("test_saver", &logger);
-	saver.picture->Connect(loader.out);
-	std::string path_out(argv[1]);
-	path_out.insert(path_out.size()-4, "_save_test");
-	ManualInput<std::string> file_out(path_out);
-	saver.path->Connect(&file_out);
-	//saver.ManualUpdate();
-
 	RandomTriangles randtris("test_randtris", &logger);
-	randtris.input_image->Connect(loader.out);
+	randtris.size->Connect(loader.size);
 	randtris.ManualUpdate();
-	RandomPoints points("test_random_points", &logger);
-	points.size->Connect(loader.size);
-
-	PointsDrawer drawer("test_points_drawer", &logger);
-	drawer.size->Connect(loader.size);
-	drawer.points->Connect(points.points);
-	drawer.ManualUpdate();
-
-	// ImageDrawer drawer("test_drawer", &logger);
-	// drawer.picture->Connect(loader.picture);
-	// drawer.ManualUpdate();
-
-	// SizePrinter printer("test_printer", &logger);
-	// printer.in->Connect(loader.size);
-	// printer.ManualUpdate();
-
-	// ImageSaver saver("test_saver", &logger);
-	// saver.picture->Connect(loader.picture);
-	// std::string path_out(argv[1]);
-	// path_out.insert(path_out.size()-4, "_save_test");
-	// ManualInput<std::string> file_out(path_out);
-	// saver.path->Connect(&file_out);
-	// saver.ManualUpdate();
 
 	return 0;
 }

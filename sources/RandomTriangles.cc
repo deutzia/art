@@ -5,9 +5,9 @@ void RandomTriangles::Compute()
 {
 	logger->Enter("Computing Block RandomTriangles");
 
-	sf::Image image = input_image->GetData().copyToImage();
-	int x = image.getSize().x;
-	int y = image.getSize().y;
+	sf::Vector2u s = size->GetData();
+	int x = s.x;
+	int y = s.y;
 
 	std::list<Triangle> tris;
 	// random point inside instead?
@@ -68,7 +68,7 @@ void RandomTriangles::Compute()
 RandomTriangles::RandomTriangles(std::string _name, Logger* _logger)
 : Block(_name, _logger)
 {
-	input_image = new Input<sf::Texture>(this);
+	size = new Input<sf::Vector2u>(this);
 	triangles = new Output<std::vector<Triangle>>(this);
 	output_image = new Output<sf::Texture>(this);
 }
