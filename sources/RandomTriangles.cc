@@ -1,14 +1,6 @@
 #include "RandomTriangles.hh"
 #include <SFML/Window.hpp>
 
-double rn(double a, double b) //change this
-{
-    static std::random_device rd;  //Will be used to obtain a seed for the random number engine
-    static std::mt19937 gen(rd()); //Standard mersenne_twister_engine seeded with rd()
-    std::uniform_real_distribution<> dis(a, b);
-    return dis(gen);
-}
-
 void RandomTriangles::Compute()
 {
 	logger->Enter("Computing Block RandomTriangles");
@@ -19,19 +11,15 @@ void RandomTriangles::Compute()
 
 	std::list<Triangle> tris;
 	// random point inside instead?
-	tris.push_back(
-		std::make_tuple(
-			std::make_pair(0,0),
-			std::make_pair(0,y),
-			std::make_pair(x,0)
-		)
+	tris.emplace_back(
+			sf::Vector2f(0,0),
+			sf::Vector2f(0,y),
+			sf::Vector2f(x,0)
 	);
-	tris.push_back(
-		std::make_tuple(
-			std::make_pair(x,y),
-			std::make_pair(x,0),
-			std::make_pair(0,y)
-		)
+	tris.emplace_back(
+			sf::Vector2f(x,y),
+			sf::Vector2f(x,0),
+			sf::Vector2f(0,y)
 	);
 
 	const int iterations = 100;
@@ -39,15 +27,17 @@ void RandomTriangles::Compute()
 	{
 		Triangle tri = tris.front();
 		tris.pop_front();
-		Point p1, p2, p3;
-		std::tie(p1, p2, p3) = tri;
-		Point p12 = {rn(p1.first, p2.first), rn(p1.second, p2.second)};
-		Point p23 = {rn(p2.first, p3.first), rn(p2.second, p3.second)};
-		Point p31 = {rn(p3.first, p1.first), rn(p3.second, p1.second)};
-		Point p4 = {(p12.first+p23.first+p31.first)/3, (p12.second+p23.second+p31.second)/3};
-		Triangle t1 = make_tuple(p1, p2, p4);
-		Triangle t2 = make_tuple(p2, p3, p4);
-		Triangle t3 = make_tuple(p3, p1, p4);
+		sf::Vector2f p1, p2, p3;
+		p1 = tri[0].position;
+		p2 = tri[1].position;
+		p3 = tri[2].position;
+		sf::Vector2f p12 = {random_float(p1.x, p2.x), random_float(p1.y, p2.y)};
+		sf::Vector2f p23 = {random_float(p2.x, p3.x), random_float(p2.y, p3.y)};
+		sf::Vector2f p31 = {random_float(p3.x, p1.x), random_float(p3.y, p1.y)};
+		sf::Vector2f p4 = {(p12.x+p23.x+p31.x)/3, (p12.y+p23.y+p31.y)/3};
+		Triangle t1 = Triangle(p1, p2, p4);
+		Triangle t2 = Triangle(p2, p3, p4);
+		Triangle t3 = Triangle(p3, p1, p4);
 		tris.push_back(t1);
 		tris.push_back(t2);
 		tris.push_back(t3);
@@ -55,19 +45,9 @@ void RandomTriangles::Compute()
 
 	//for debugging:
 	sf::RenderWindow window(sf::VideoMode(x, y), "triangles");
-	std::vector<sf::ConvexShape> shapes;	
-	for( auto tri : tris )
-	{
-		sf::ConvexShape convex;
-		convex.setPointCount(3);
-		Point p1, p2, p3;
-		std::tie(p1, p2, p3) = tri;
-		convex.setPoint(0, sf::Vector2f(p1.first, p1.second));
-		convex.setPoint(1, sf::Vector2f(p2.first, p2.second));
-		convex.setPoint(2, sf::Vector2f(p3.first, p3.second));
-		convex.setFillColor(sf::Color(rn(0,255), rn(0,255), rn(0,255)));
-		shapes.push_back(convex);
-	}
+	for (auto &tri: tris)
+		tri.SetColor(sf::Color(random_float(0,255), random_float(0,255), random_float(0,255)));
+
 	while(window.isOpen())
 	{
 		sf::Event event;
@@ -77,8 +57,8 @@ void RandomTriangles::Compute()
 				window.close();
 		}
 		window.clear(sf::Color::Black);
-		for( auto shape : shapes )
-			window.draw(shape);
+		for (auto tri: tris)
+			window.draw(tri);
 		window.display();
 	}
 

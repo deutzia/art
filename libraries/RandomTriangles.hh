@@ -1,7 +1,7 @@
 #include <list>
-#include <random>
 #include <SFML/Graphics.hpp>
 #include "Block.hh"
+#include "Tools.hh"
 
 class RandomTriangles: public Block
 {
@@ -10,8 +10,6 @@ public:
 	Input<sf::Texture>* input_image;
 
 	/* List of triangles */
-	typedef std::pair<int, int> Point;
-	typedef std::tuple<Point, Point, Point> Triangle;
 	Output<std::vector<Triangle>>* triangles;
 
 	/* Picture with triangles overlain */
