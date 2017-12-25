@@ -20,15 +20,15 @@ int main(int argc, char* argv[])
 	ManualInput<std::string> file_in(argv[1]);
 	loader.file->Connect(&file_in);
 
-	RandomTriangles randtris("test_randtris", &logger);
-	randtris.size->Connect(loader.size);
+	// RandomTriangles randtris("test_randtris", &logger);
+	// randtris.size->Connect(loader.size);
 
-	ImageSaver saver("test_saver", &logger);
-	saver.picture->Connect(randtris.output_image);
+	// ImageSaver saver("test_saver", &logger);
+	// saver.picture->Connect(randtris.output_image);
 
-	ManualInput<std::string> savepath("pictures/bichon_save_test.jpg");
-	saver.path->Connect(&savepath);
-	saver.ManualUpdate();
+	// ManualInput<std::string> savepath("pictures/bichon_save_test.jpg");
+	// saver.path->Connect(&savepath);
+	// saver.ManualUpdate();
 
 	return 0;
 }
