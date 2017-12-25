@@ -6,23 +6,6 @@
 #include "PointsDrawer.hh"
 #include "RandomPoints.hh"
 
-class SizePrinter: public Block
-{
-public:
-	Input<sf::Vector2u>* in;
-protected:
-	virtual void Compute() override
-	{
-		logger->Log() << in->GetData().x <<" " <<in->GetData().y <<"\n";
-	}
-public:
-	SizePrinter(std::string _name, Logger* _logger)
-	:Block(_name, _logger)
-	{
-		in = new Input<sf::Vector2u>(this);
-	}
-};
-
 int main(int argc, char* argv[])
 {
 	Logger logger;
@@ -39,7 +22,13 @@ int main(int argc, char* argv[])
 
 	RandomTriangles randtris("test_randtris", &logger);
 	randtris.size->Connect(loader.size);
-	randtris.ManualUpdate();
+
+	ImageSaver saver("test_saver", &logger);
+	saver.picture->Connect(randtris.output_image);
+
+	ManualInput<std::string> savepath("pictures/bichon_save_test.jpg");
+	saver.path->Connect(&savepath);
+	saver.ManualUpdate();
 
 	return 0;
 }
