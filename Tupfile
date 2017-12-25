@@ -1,4 +1,4 @@
-CPPFLAGS += -I./libraries
+CPPFLAGS += -I./headers
 CPPFLAGS += -lpthread -lsfml-graphics -lsfml-window -lsfml-system -std=c++11 -O2
 CPPFLAGS += -W -Wall -Wextra -Wpedantic -Wno-reorder
 COMPILER = g++
