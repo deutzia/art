@@ -9,6 +9,7 @@ void TrianglesToTexture::Compute()
  
     sf::RenderTexture* render_texture = new sf::RenderTexture();
     render_texture->create(size.x, size.y);
+    render_texture->clear();
  
     for (Triangle &triangle: triangles)
         render_texture->draw(triangle);
