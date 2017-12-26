@@ -32,3 +32,6 @@ public:
 ColorPrefix operator+(ColorPrefix, ColorPrefix);
 ColorPrefix operator-(ColorPrefix, ColorPrefix);
 ColorPrefix operator/(ColorPrefix, int);
+ColorPrefix operator+=(ColorPrefix&, ColorPrefix);
+ColorPrefix operator-=(ColorPrefix&, ColorPrefix);
+ColorPrefix operator/=(ColorPrefix&, int);

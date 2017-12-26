@@ -65,3 +65,18 @@ ColorPrefix operator/(ColorPrefix a, int v)
 {
 	return {a.red / v, a.green / v, a.blue / v, a.alpha / v};
 }
+
+ColorPrefix operator+=(ColorPrefix& a, ColorPrefix b)
+{
+	return a = a + b;
+}
+
+ColorPrefix operator-=(ColorPrefix& a, ColorPrefix b)
+{
+	return a = a - b;
+}
+
+ColorPrefix operator/=(ColorPrefix& a, int v)
+{
+	return a = a / v;
+}
