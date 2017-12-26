@@ -23,7 +23,7 @@ void RandomTriangles::Compute()
 			sf::Vector2f(0,y)
 	);
 
-	const int iterations = 80;
+	const int iterations = 6320;
 	for(int i = 0; i < iterations; ++i)
 	{
 		Triangle triangle = triangle_list.front();
