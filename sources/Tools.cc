@@ -32,6 +32,22 @@ Triangle::Triangle(sf::Vector2f p1, sf::Vector2f p2, sf::Vector2f p3)
 	(*this)[2].position = p3;
 }
 
+Triangle::Triangle(sf::Vector2u p1, sf::Vector2u p2, sf::Vector2u p3)
+: VertexArray(sf::Triangles, 3)
+{
+	(*this)[0].position = sf::Vector2f(p1.x, p1.y);
+	(*this)[1].position = sf::Vector2f(p2.x, p2.y);
+	(*this)[2].position = sf::Vector2f(p3.x, p3.y);
+}
+
+Triangle::Triangle(sf::Vertex p1, sf::Vertex p2, sf::Vertex p3)
+: VertexArray(sf::Triangles, 3)
+{
+	(*this)[0] = p1;
+	(*this)[1] = p2;
+	(*this)[2] = p3;
+}
+
 void Triangle::SetColor(sf::Color c)
 {
 	(*this)[0].color = c;

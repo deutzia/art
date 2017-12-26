@@ -15,6 +15,8 @@ class Triangle: public sf::VertexArray
 public:
 	Triangle();
 	Triangle(sf::Vector2f, sf::Vector2f, sf::Vector2f);
+	Triangle(sf::Vector2u, sf::Vector2u, sf::Vector2u);
+	Triangle(sf::Vertex, sf::Vertex, sf::Vertex);
 	void SetColor(sf::Color);
 };
 
