@@ -8,6 +8,9 @@ double random_double(double a, double b);
 /* returns random float in interval (a, b) */
 float random_float(float a, float b);
 
+/* returns random int in interval [a, b] */
+int random_int(int a, int b);
+
 class Triangle: public sf::VertexArray
 {
 public:

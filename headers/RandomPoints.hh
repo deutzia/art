@@ -8,7 +8,7 @@ class RandomPoints: public Block
 {
 public:
 	Input<sf::Vector2u>* in_size;
-	Output<std::vector<sf::Vector2f> >* out_points; 
+	Output<std::vector<sf::Vector2u> >* out_points; 
 protected:
 	virtual void Compute() override;
 public:
