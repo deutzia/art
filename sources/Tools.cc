@@ -1,15 +1,9 @@
 #include "Tools.hh"
 
-double random_double(double a, double b)
-{
-	static std::random_device rd;
-	static std::mt19937 gen(rd());
-	std::uniform_real_distribution<> dis(a, b);
-	return dis(gen);
-}
-
 float random_float(float a, float b)
 {
+	if (a > b)
+		std::swap(a, b);
 	static std::random_device rd;
 	static std::mt19937 gen(rd());
 	std::uniform_real_distribution<> dis(a, b);
@@ -18,8 +12,10 @@ float random_float(float a, float b)
 
 int random_int(int a, int b)
 {
-    static std::random_device rd;  //Will be used to obtain a seed for the random number engine
-    static std::mt19937 gen(rd()); //Standard mersenne_twister_engine seeded with rd()
+	if (a > b)
+		std::swap(a, b);
+    static std::random_device rd; 
+    static std::mt19937 gen(rd());
     std::uniform_int_distribution<> dis(a, b);
     return dis(gen);
 }
@@ -44,47 +40,39 @@ void Triangle::SetColor(sf::Color c)
 }
 
 ColorPrefix::ColorPrefix(uint32_t r, uint32_t g, uint32_t b, uint32_t a)
-: red(r)
-, green(g)
-, blue(b)
-, alpha(a)
+: r(r), g(g), b(b), a(a)
 {}
 
 ColorPrefix::ColorPrefix(sf::Color c)
-: red(c.r)
-, green(c.g)
-, blue(c.b)
-, alpha(c.a)
+: r(c.r), g(c.g), b(c.b), a(c.a)
 {}
 
-ColorPrefix operator+(ColorPrefix a, ColorPrefix b)
+ColorPrefix operator+(ColorPrefix x, ColorPrefix y)
 {
-	return {a.red + b.red, a.green + b.green,
-		a.blue + b.blue, a.alpha + b.alpha};
+	return {x.r + y.r, x.g + y.g, x.b + y.b, x.a + y.a};
 }
 
-ColorPrefix operator-(ColorPrefix a, ColorPrefix b)
+ColorPrefix operator-(ColorPrefix x, ColorPrefix y)
 {
-	return {a.red - b.red, a.green - b.green,
-		a.blue - b.blue, a.alpha - b.alpha};
+	return {x.r - y.r, x.g - y.g, x.b - y.b, x.a - y.a};
 }
 
-ColorPrefix operator/(ColorPrefix a, int v)
+ColorPrefix operator/(ColorPrefix x, int v)
 {
-	return {a.red / v, a.green / v, a.blue / v, a.alpha / v};
+	return {x.r / v, x.g / v, x.b / v, x.a / v};
 }
 
-ColorPrefix operator+=(ColorPrefix& a, ColorPrefix b)
+ColorPrefix operator+=(ColorPrefix& x, ColorPrefix y)
 {
-	return a = a + b;
+	return x = x + y;
 }
 
-ColorPrefix operator-=(ColorPrefix& a, ColorPrefix b)
+ColorPrefix operator-=(ColorPrefix& x, ColorPrefix y)
 {
-	return a = a - b;
+	return x = x - y;
 }
 
-ColorPrefix operator/=(ColorPrefix& a, int v)
+ColorPrefix operator/=(ColorPrefix& x, int v)
 {
-	return a = a / v;
+	return x = x / v;
 }

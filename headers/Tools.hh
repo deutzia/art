@@ -2,13 +2,12 @@
 #include <random>
 #include <SFML/Graphics.hpp>
 
-/* returns random double in interval (a, b) */
-double random_double(double a, double b);
-
-/* returns random float in interval (a, b) */
+/* Returns a random float in interval [a, b) 
+ * Safe for a > b */
 float random_float(float a, float b);
 
-/* returns random int in interval [a, b] */
+/* Returns random int in interval [a, b] 
+ * Safe for a > b */
 int random_int(int a, int b);
 
 class Triangle: public sf::VertexArray
@@ -24,10 +23,7 @@ public:
 class ColorPrefix
 {
 public:
-	uint32_t red;
-	uint32_t green;
-	uint32_t blue;
-	uint32_t alpha;
+	uint32_t r, g, b, a;
 	ColorPrefix(uint32_t r, uint32_t g, uint32_t b, uint32_t a);
 	ColorPrefix(sf::Color);
 };
