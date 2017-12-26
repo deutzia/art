@@ -7,14 +7,15 @@ void TrianglesToTexture::Compute()
     sf::Vector2u size = in_size->GetData();
     std::vector<Triangle> triangles = in_triangles->GetData();
  
-    sf::RenderTexture* render_texture = new sf::RenderTexture();
-    render_texture->create(size.x, size.y);
-    render_texture->clear();
+    sf::RenderTexture render_texture;
+    render_texture.create(size.x, size.y);
+    render_texture.clear();
  
     for (Triangle &triangle: triangles)
-        render_texture->draw(triangle);
+        render_texture.draw(triangle);
  
-    SetData(out_texture, render_texture->getTexture());
+    render_texture.display(); // This fixes upside down textures
+    SetData(out_texture, render_texture.getTexture());
  
     logger->Exit();
 }
