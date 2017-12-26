@@ -1,7 +1,8 @@
 venv/
-main
 pictures/
 TODO
-build/
 .tup/
 tup/
+release/
+test_feature/
+test.cc

@@ -4,5 +4,5 @@ CPPFLAGS += -W -Wall -Wextra -Wpedantic -Wno-reorder
 COMPILER = g++
 
 :foreach sources/*.cc |> $(COMPILER) $(CPPFLAGS) -c %f -o %o |> build/%B.o
-:main.cc |> $(COMPILER) $(CPPFLAGS) -c %f -o %o |> build/%B.o
+:@(MAIN) |> $(COMPILER) $(CPPFLAGS) -c %f -o %o |> build/%B.o
 :build/*.o |> $(COMPILER) $(CPPFLAGS) %f -o %o |> main

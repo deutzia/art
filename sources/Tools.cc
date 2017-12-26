@@ -34,3 +34,34 @@ void Triangle::SetColor(sf::Color c)
 	(*this)[1].color = c;
 	(*this)[2].color = c;
 }
+
+ColorPrefix::ColorPrefix(uint32_t r, uint32_t g, uint32_t b, uint32_t a)
+: red(r)
+, green(g)
+, blue(b)
+, alpha(a)
+{}
+
+ColorPrefix::ColorPrefix(sf::Color c)
+: red(c.r)
+, green(c.g)
+, blue(c.b)
+, alpha(c.a)
+{}
+
+ColorPrefix operator+(ColorPrefix a, ColorPrefix b)
+{
+	return {a.red + b.red, a.green + b.green,
+		a.blue + b.blue, a.alpha + b.alpha};
+}
+
+ColorPrefix operator-(ColorPrefix a, ColorPrefix b)
+{
+	return {a.red - b.red, a.green - b.green,
+		a.blue - b.blue, a.alpha - b.alpha};
+}
+
+ColorPrefix operator/(ColorPrefix a, int v)
+{
+	return {a.red / v, a.green / v, a.blue / v, a.alpha / v};
+}
