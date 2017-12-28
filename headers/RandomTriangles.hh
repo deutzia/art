@@ -13,6 +13,7 @@ class RandomTriangles: public Block
 {
 public:
 	Input<sf::Vector2u>* in_size;
+	Input<int>* in_iterations;
 
 	Output<std::vector<Triangle>>* out_triangles;
 

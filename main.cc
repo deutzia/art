@@ -23,6 +23,8 @@ int main(int argc, char* argv[])
 	loader.in_file->Connect(&in_file);
 
 	RandomTriangles randtris("test_randtris", &logger);
+	ManualInput<int> in_iterations(10000);
+	randtris.in_iterations->Connect(&in_iterations);
 	randtris.in_size->Connect(loader.out_size);
 
 	TrianglesToTexture tristotex("test_tristotex", &logger);
