@@ -25,11 +25,14 @@ int main(int argc, char* argv[])
 	ManualInput<std::string> in_file(argv[1]);
 	loader.in_file->Connect(&in_file);
 
-	RandomTriangles randtris("test_randtris", &logger);
-	randtris.in_size->Connect(loader.out_size);
+	RandomPoints rand_points("RandomPoints", &logger);
+	rand_points.in_size->Connect(loader.out_size);
+
+	DelaunayTriangulation delaunay("DelaunayTriangulation", &logger);
+	delaunay.in_points->Connect(rand_points.out_points);
 
 	MassCenterColorTriangles mass("test_mass_center_color", &logger);
-	mass.in_triangles->Connect(randtris.out_triangles);
+	mass.in_triangles->Connect(delaunay.out_triangles);
 	mass.in_texture->Connect(loader.out_picture);
 
 	TrianglesToTexture tristotex("test_tristotex", &logger);
