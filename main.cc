@@ -1,3 +1,4 @@
+#include "AverageColorTriangles.hh"
 #include "DelaunayTriangulation.hh"
 #include "ImageDrawer.hh"
 #include "ImageLoader.hh"
@@ -31,13 +32,16 @@ int main(int argc, char* argv[])
 	DelaunayTriangulation delaunay("DelaunayTriangulation", &logger);
 	delaunay.in_points->Connect(rand_points.out_points);
 
-	MassCenterColorTriangles mass("test_mass_center_color", &logger);
-	mass.in_triangles->Connect(delaunay.out_triangles);
-	mass.in_texture->Connect(loader.out_picture);
+	PrefixSumsOnImage prefs("PrefixSumsOnImage", &logger);
+	prefs.in_texture->Connect(loader.out_picture);
+
+	AverageColorTriangles avg_color("AverageColorTriangles", &logger);
+	avg_color.in_color_prefix->Connect(prefs.out_array);
+	avg_color.in_triangles->Connect(delaunay.out_triangles);
 
 	TrianglesToTexture tristotex("test_tristotex", &logger);
 	tristotex.in_size->Connect(loader.out_size);
-	tristotex.in_triangles->Connect(mass.out_triangles);
+	tristotex.in_triangles->Connect(avg_color.out_triangles);
 
 	ImageDrawer drawer("test_drawer", &logger);
 	drawer.in_picture->Connect(tristotex.out_texture);
@@ -46,7 +50,7 @@ int main(int argc, char* argv[])
 	ImageSaver saver("test_saver", &logger);
 	saver.in_picture->Connect(tristotex.out_texture);
 
-	ManualInput<std::string> savepath("pictures/bichon_v1.jpg");
+	ManualInput<std::string> savepath("pictures/bichon_v3.jpg");
 	saver.in_path->Connect(&savepath);
 	saver.ManualUpdate();
 
