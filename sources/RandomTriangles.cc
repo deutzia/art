@@ -5,6 +5,7 @@ void RandomTriangles::Compute()
 {
 	logger->Enter("Computing Block RandomTriangles");
 
+	int iterations = in_iterations->GetData();
 	sf::Vector2u size = in_size->GetData();
 	int x = size.x;
 	int y = size.y;
@@ -23,7 +24,6 @@ void RandomTriangles::Compute()
 			sf::Vector2f(0,y)
 	);
 
-	const int iterations = 6320;
 	for(int i = 0; i < iterations; ++i)
 	{
 		Triangle triangle = triangle_list.front();
