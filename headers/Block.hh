@@ -2,7 +2,7 @@
 #include <future>
 #include <string>
 #include <algorithm>
-#include "Logger.hh"
+#include "Logger/Logger.hh"
 
 class
 {
