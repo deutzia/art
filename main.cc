@@ -33,7 +33,7 @@ int main(int argc, char* argv[])
 	delaunay.in_points->Connect(rand_points.out_points);
 
 	PrefixSumsOnImage prefs("PrefixSumsOnImage", &logger);
-	prefs.in_texture->Connect(loader.out_picture);
+	prefs.in_texture->Connect(loader.out_texture);
 
 	AverageColorTriangles avg_color("AverageColorTriangles", &logger);
 	avg_color.in_color_prefix->Connect(prefs.out_array);
@@ -44,11 +44,11 @@ int main(int argc, char* argv[])
 	tristotex.in_triangles->Connect(avg_color.out_triangles);
 
 	ImageDrawer drawer("test_drawer", &logger);
-	drawer.in_picture->Connect(tristotex.out_texture);
+	drawer.in_texture->Connect(tristotex.out_texture);
 	drawer.ManualUpdate();
 
 	ImageSaver saver("test_saver", &logger);
-	saver.in_picture->Connect(tristotex.out_texture);
+	saver.in_texture->Connect(tristotex.out_texture);
 
 	ManualInput<std::string> savepath("pictures/bichon_v3.jpg");
 	saver.in_path->Connect(&savepath);

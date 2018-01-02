@@ -4,7 +4,7 @@ void ImageSaver::Compute()
 {
 	logger->Enter("Computing Block ImageSaver");
 
-	if (!in_picture->GetData().copyToImage().saveToFile(in_path->GetData()))
+	if (!in_texture->GetData().copyToImage().saveToFile(in_path->GetData()))
 	{
 		std::string error_msg = "Failed to save image file: " + in_path->GetData();
 		logger->Log(Logger::LogLevel::Error) << error_msg;
@@ -17,7 +17,7 @@ void ImageSaver::Compute()
 ImageSaver::ImageSaver(std::string _name, Logger* _logger)
 : Block(_name, _logger)
 {
-	in_picture = new Input<sf::Texture>(this);
+	in_texture = new Input<sf::Texture>(this);
 	in_path = new Input<std::string>(this);
 }
 
