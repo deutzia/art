@@ -54,6 +54,8 @@ void RandomTriangles::Compute()
 	for (Triangle &triangle: triangle_list)
 		triangle_vector.push_back(triangle);
 	SetData(out_triangles, triangle_vector);
+
+    logger->Exit();
 }
 
 RandomTriangles::RandomTriangles(std::string _name, Logger* _logger)

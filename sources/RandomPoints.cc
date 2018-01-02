@@ -9,7 +9,7 @@ void RandomPoints::Compute()
 	result.emplace_back(0, bounds.y);
 	result.emplace_back(bounds.x, 0);
 	result.emplace_back(bounds.x, bounds.y);
-	for (unsigned i = 0; i < bounds.x * bounds.y / 100; ++i)
+	for (unsigned i = 0; i < bounds.x * bounds.y / 300; ++i)
 		result.emplace_back(random_float(0, bounds.x), random_float(0, bounds.y));
 	SetData(out_points, std::move(result));
 	logger->Exit();
