@@ -33,7 +33,7 @@ int main(int argc, char* argv[])
 
 
 	TrianglesToTexture tris1("tris1", &logger);
-	TrianglesToTexture tris1_2("tris1", &logger);
+	TrianglesToTexture tris1_2("tris1_2", &logger);
 
 	RandomPoints randpoints("tris1_randpoints", &logger);
 	randpoints.in_size->Connect(loader.out_size);
@@ -61,7 +61,7 @@ int main(int argc, char* argv[])
 
 
 	TrianglesToTexture tris2("tris2", &logger);
-	TrianglesToTexture tris2_2("tris2", &logger);
+	TrianglesToTexture tris2_2("tris2_2", &logger);
 
 	RandomTriangles randtris2("tris2_randtris", &logger);
 	ManualInput<int> in_iterations(10000);
