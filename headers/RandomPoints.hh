@@ -1,5 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include <set>
 #include <vector>
 #include "Block.hh"
 #include "Tools.hh"
