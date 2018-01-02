@@ -59,6 +59,8 @@ void RandomTriangles::Compute()
 RandomTriangles::RandomTriangles(std::string _name, Logger* _logger)
 : Block(_name, _logger)
 {
+	in_iterations = new Input<int>(this);
 	in_size = new Input<sf::Vector2u>(this);
+	
 	out_triangles = new Output<std::vector<Triangle>>(this);
 }
