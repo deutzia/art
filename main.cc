@@ -3,7 +3,6 @@
 #include "ImageDrawer.hh"
 #include "ImageLoader.hh"
 #include "ImageSaver.hh"
-#include "Logger.hh"
 #include "MassCenterColorTriangles.hh"
 #include "PointsDrawer.hh"
 #include "PrefixSumsOnImage.hh"

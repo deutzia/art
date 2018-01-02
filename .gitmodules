@@ -1,0 +1,3 @@
+[submodule "libraries/Logger"]
+	path = libraries/Logger
+	url = https://github.com/deutzia/Logger
