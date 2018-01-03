@@ -2,6 +2,10 @@
 #include <random>
 #include <SFML/Graphics.hpp>
 
+/* Returns a scaled copy of the texture */
+sf::Texture scale_texture(const sf::Texture&, float, float);
+sf::Texture scale_texture(const sf::Texture&, float);
+
 /* Returns a random float in interval [a, b) 
  * Safe for a > b */
 float random_float(float a, float b);

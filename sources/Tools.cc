@@ -1,5 +1,25 @@
 #include "Tools.hh"
 
+sf::Texture scale_texture(const sf::Texture& texture, float scale_x, float scale_y)
+{
+	sf::Sprite sprite(texture);
+	sprite.setScale(scale_x, scale_y);
+	int x = texture.getSize().x;
+	int y = texture.getSize().y;
+	sf::RenderTexture render_texture;
+	render_texture.create(x * scale_x, y * scale_y);
+	render_texture.clear();
+	render_texture.draw(sprite);
+	render_texture.display(); // This fixes upside down textures
+	sf::Texture scaled_texture(render_texture.getTexture());
+	return scaled_texture;
+}
+
+sf::Texture scale_texture(const sf::Texture &texture, float scale)
+{
+	return scale_texture(texture, scale, scale);
+}
+
 float random_float(float a, float b)
 {
 	if (a > b)
