@@ -24,8 +24,9 @@ void AverageColorTriangles::RecolorTriangle(
 		std::swap(a, c); 
 	if (c.x < b.x)
 		std::swap(b, c);
-	// logger->Log(Logger::LogLevel::Debug)<<"Triangle: ("<<a.x<<", "<<a.y<<") ("<<b.x<<", "<<b.y<<") ("<<c.x<<", "<<c.y<<")";
 
+	/* This is float division so it's safe to divide by 0.
+	 * In this case the result is not used, because the points are too close */
 	float slope_ac = (c.y - a.y) / (c.x - a.x);
 	// Left to right:
 	float slope_ab = (b.y - a.y) / (b.x - a.x);
@@ -61,10 +62,10 @@ void AverageColorTriangles::RecolorTriangle(
 	// Right to left:
 	float slope_cb = (b.y - c.y) / (b.x - c.x);
 	float x_rtl = round(c.x) - .5;
-	float y_cb = c.y + slope_cb * (c.x - x_rtl);
+	float y_cb = c.y - slope_cb * (c.x - x_rtl);
 	float y_ca = c.y - slope_ac * (c.x - x_rtl);
 
-	while (x_rtl > floor(b.x) + .5)
+	while (x_rtl > floor(a.x) + .5 && x_rtl > floor(b.x) + .5)
 	{
 		int x = floor(x_rtl);
 		int y1 = floor(y_cb);
@@ -84,7 +85,7 @@ void AverageColorTriangles::RecolorTriangle(
 		if (y1 != 0)
 			color_sum -= color_prefix[x][y1-1];
 
-		y_cb += slope_cb;
+		y_cb -= slope_cb;
 		y_ca -= slope_ac;
 		x_rtl -= 1;
 	}
@@ -114,20 +115,18 @@ void AverageColorTriangles::RecolorTriangle(
 		// Make sure the edge case is fixed
 		if (pixels_inside == 0)
 		{
-			logger->Log(Logger::LogLevel::Error) << "RecolorTriangle: Empty triangle: " <<
+			logger->LogE() << "RecolorTriangle: Empty triangle: " <<
 		 		"(" << a.x << "," << a.y << ")," <<
 		 		"(" << b.x << "," << b.y << ")," <<
 		 		"(" << c.x << "," << c.y << ")";
 			 color_sum = {0, 0, 0, 0};
 			 pixels_inside = 1;
 		}
-		// logger->Log(Logger::LogLevel::Debug) << "Fixed Edgecase";
 	}
 	color_sum /= pixels_inside;
 
 	if (color_sum.r > 255 || color_sum.g > 255 || color_sum.b > 255 || color_sum.a > 255)
-		logger->Log(Logger::LogLevel::Error) <<
-			"RecolorTriangle: Invalid color" << 
+		logger->LogE() << "RecolorTriangle: Invalid color" << 
 			": r = " << color_sum.r << 
 			", g = " << color_sum.g << 
 			", b = " << color_sum.b << 
