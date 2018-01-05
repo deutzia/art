@@ -82,7 +82,7 @@ void SideBySideCompare<x_num, y_num>::Compute()
 				logger->Log(Logger::LogLevel::Error) << errmsg.str();
 				throw errmsg.str();
 			}
-			textures[i] = scale_texture(textures[i], scale);
+			textures[i] = ScaleTexture(textures[i], scale);
 
 			sprites[i].setTexture(textures[i]);
 			sprites[i].setPosition(x * size.x * scale, y * size.y * scale);

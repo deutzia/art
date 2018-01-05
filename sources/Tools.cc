@@ -1,6 +1,6 @@
 #include "Tools.hh"
 
-sf::Texture scale_texture(const sf::Texture& texture, float scale_x, float scale_y)
+sf::Texture ScaleTexture(const sf::Texture& texture, float scale_x, float scale_y)
 {
 	sf::Sprite sprite(texture);
 	sprite.setScale(scale_x, scale_y);
@@ -15,9 +15,9 @@ sf::Texture scale_texture(const sf::Texture& texture, float scale_x, float scale
 	return scaled_texture;
 }
 
-sf::Texture scale_texture(const sf::Texture &texture, float scale)
+sf::Texture ScaleTexture(const sf::Texture &texture, float scale)
 {
-	return scale_texture(texture, scale, scale);
+	return ScaleTexture(texture, scale, scale);
 }
 
 float random_float(float a, float b)

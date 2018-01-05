@@ -32,8 +32,8 @@ void JuxtaposeDisplay::Compute()
 	{
 		float scale = MAX_SCREEN_COVERAGE * (1. / window_to_screen_ratio);
 		logger->LogI() << "Scaling oversized texture down by " << (1. - scale) * 100. << " percent";
-		texture_l = scale_texture(texture_l, scale);
-		texture_r = scale_texture(texture_r, scale);
+		texture_l = ScaleTexture(texture_l, scale);
+		texture_r = ScaleTexture(texture_r, scale);
 
 		texture_size = texture_l.getSize();
 		logger->LogV() << "New texture dimensions: " << texture_size.x << "x" << texture_size.y << "px";
