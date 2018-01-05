@@ -2,12 +2,13 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 #include "Block.hh"
+#include "Tools.hh"
 
 /*
  * JuxtaposeDisplay Block
  *   Displays two textures in a window, with a slider to compare them
  *   To move the slider click anywhere on the window
- *   The window is scaled if it's too large (the textures are not modified)
+ *   The window's textures are scaled if the window is too large
  *   The window has to be manually closed to continue execution
  */
 
