@@ -43,7 +43,7 @@ void HilbertCurvePoints::Compute()
 		for (unsigned y = 0; y < size.y; ++y)
 			sum += values[x][y];
 	// when accumulated sum is bigger than this value, a point should be placed
-	unsigned border_value = sum / (size.x * size.y) * 1000;
+	unsigned border_value = sum / (size.x * size.y) * 500;
 
 	sum = 0;
 	auto prog = logger->InitializeProgress(

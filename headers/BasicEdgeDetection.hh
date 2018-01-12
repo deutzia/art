@@ -1,5 +1,6 @@
 #pragma once
 #include <algorithm>
+#include <cmath>
 #include <SFML/Graphics.hpp>
 #include "Block.hh"
 #include "Tools.hh"

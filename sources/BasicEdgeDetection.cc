@@ -17,7 +17,7 @@ unsigned BasicEdgeDetection::DifferencesFromNeighbours(int x, int y)
 			result += BasicEdgeDetection::PixelsDifference(image.getPixel(x, y),
 				image.getPixel(nx, ny));
 	}
-	return result;
+	return pow(result, 1.5);
 }
 
 void BasicEdgeDetection::Compute()
