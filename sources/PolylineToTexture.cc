@@ -7,7 +7,7 @@ void PolylineToTexture::Compute()
 	std::vector<sf::Vector2f> points = in_points->GetData();
 	sf::VertexArray lines(sf::LineStrip, points.size());
 
-	for (unsigned i = 0; i < points.size(); ++i)
+	for (uint32_t i = 0; i < points.size(); ++i)
 	{
 		lines[i].position = points[i];
 		lines[i].color = sf::Color::Black;

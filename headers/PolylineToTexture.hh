@@ -2,6 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include "Block.hh"
 
+// create a texture with a polyline given a list of points in order
 class PolylineToTexture: public Block
 {
 public:

@@ -1,8 +1,8 @@
 #include "HilbertCurvePoints.hh"
 
-sf::Vector2f HilbertCurvePoints::CoordsFromDist(unsigned s, int n)
+sf::Vector2f HilbertCurvePoints::CoordsFromDist(uint32_t s, int n)
 {
-	unsigned x = 0, y = 0;
+	uint32_t x = 0, y = 0;
 	for (int i = 0; i < 2 * n; i += 2)
 	{
 		int sa = (s >> (i + 1)) & 1; // Get bit i + 1 of s.
@@ -10,7 +10,7 @@ sf::Vector2f HilbertCurvePoints::CoordsFromDist(unsigned s, int n)
 
 		if ((sa ^ sb) == 0) // If sa,sb = 00 or 11,
 		{
-			unsigned temp = x; // swap x and y,
+			uint32_t temp = x; // swap x and y,
 			x = y ^ (-sa); // and if sa = 1,
 			y = temp ^ (-sa); // complement them.
 		}
@@ -26,31 +26,33 @@ void HilbertCurvePoints::Compute()
 
 	sf::Vector2u size = in_size->GetData();
 	std::vector<sf::Vector2f> points;
-	std::vector<std::vector<unsigned>> values = in_values->GetData();
+	std::vector<std::vector<uint32_t>> values = in_values->GetData();
 
-	unsigned n = 1, s = std::max(size.x, size.y);
+	// find order of curve to be generated
+	uint32_t n = 1, s = std::max(size.x, size.y);
 	while (n < 16 && (1u << n) < s)
 		n++;
 
-	logger->LogV() <<"Generating Hilbert Curve of order " <<n;
+	logger->LogV() << "Generating Hilbert Curve of order " << n;
 
 	double hil_size = (1 << n);
 	double multiplier_x = size.x / hil_size;
 	double multiplier_y = size.y / hil_size;
 
-	unsigned long long sum = 0;
-	for (unsigned x = 0; x < size.x; ++x)
-		for (unsigned y = 0; y < size.y; ++y)
+	uint32_t long long sum = 0;
+	for (uint32_t x = 0; x < size.x; ++x)
+		for (uint32_t y = 0; y < size.y; ++y)
 			sum += values[x][y];
 	// when accumulated sum is bigger than this value, a point should be placed
-	unsigned border_value = sum / (size.x * size.y) * 500;
+	uint32_t border_value = sum / (size.x * size.y) * 100;
 
+	// place points along the curve when details are detected
 	sum = 0;
 	auto prog = logger->InitializeProgress(
 		Logger::LogLevel::Verbose, 0, (1u << (2*n)));
-	for (unsigned i = 0; i < (1u << (2*n)); ++i)
+	for (uint32_t i = 0; i < (1u << (2*n)); ++i)
 	{
-		sf::Vector2f p = HilbertCurvePoints::CoordsFromDist(i, n);
+		sf::Vector2f p = CoordsFromDist(i, n);
 		p.x = p.x * multiplier_x;
 		p.y = p.y * multiplier_y;
 		sum += values[p.x][p.y];
@@ -71,6 +73,6 @@ HilbertCurvePoints::HilbertCurvePoints(std::string _name, Logger* _logger)
 : Block(_name, _logger)
 {
 	in_size = new Input<sf::Vector2u>(this);
-	in_values = new Input<std::vector<std::vector<unsigned>>>(this);
+	in_values = new Input<std::vector<std::vector<uint32_t>>>(this);
 	out_points = new Output<std::vector<sf::Vector2f>>(this);
 }

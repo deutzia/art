@@ -12,14 +12,15 @@ private:
 	sf::Image image;
 	sf::Vector2u size;
 	const int translations[4][2] = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
+	const float differences_exponent = 1.5;
 
 public:
 	Input<sf::Texture>* in_texture;
-	Output<std::vector<std::vector<unsigned>>>* out_values;
+	Output<std::vector<std::vector<uint32_t>>>* out_values;
 
 private:
-	unsigned PixelsDifference(sf::Color, sf::Color);
-	unsigned DifferencesFromNeighbours(int, int);
+	uint32_t PixelsDifference(sf::Color, sf::Color);
+	uint32_t DifferencesFromNeighbours(int, int);
 
 protected:
 	virtual void Compute() override;
