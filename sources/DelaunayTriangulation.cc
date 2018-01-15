@@ -15,7 +15,7 @@ double NormSq(double x, double y)
 	return x * x + y * y;
 }
 
-bool DelaunayTriangulation::InCircle(unsigned a, unsigned b, unsigned c, unsigned x)
+bool DelaunayTriangulation::InCircle(uint32_t a, uint32_t b, uint32_t c, uint32_t x)
 {
 	sf::Vector2f A = points[a], B = points[b], C = points[c], X = points[x];
 	double d = 2*(double(A.x) * (B.y - C.y) + double(B.x) * (C.y - A.y) + double(C.x) * (A.y - B.y));
@@ -29,9 +29,9 @@ bool DelaunayTriangulation::InCircle(unsigned a, unsigned b, unsigned c, unsigne
 	return NormSq(xx, xy) < NormSq(ux, uy);
 }
 
-void DelaunayTriangulation::AngularSort(std::vector<unsigned>& pts, unsigned origin)
+void DelaunayTriangulation::AngularSort(std::vector<uint32_t>& pts, uint32_t origin)
 {
-	std::vector<unsigned> upper, lower;
+	std::vector<uint32_t> upper, lower;
 	sf::Vector2f o_coords = points[origin];
 	for (auto x: pts)
 	{
@@ -44,7 +44,7 @@ void DelaunayTriangulation::AngularSort(std::vector<unsigned>& pts, unsigned ori
 	}
 
 	std::sort(lower.begin(), lower.end(),
-		[this, o_coords](unsigned a, unsigned b)
+		[this, o_coords](uint32_t a, uint32_t b)
 		{
 			sf::Vector2f a_c = points[a], b_c = points[b];
 			a_c -= o_coords;
@@ -52,7 +52,7 @@ void DelaunayTriangulation::AngularSort(std::vector<unsigned>& pts, unsigned ori
 			return DotProduct(a_c, b_c) > 0;
 		});
 	std::sort(upper.begin(), upper.end(),
-		[this, o_coords](unsigned a, unsigned b)
+		[this, o_coords](uint32_t a, uint32_t b)
 		{
 			sf::Vector2f a_c = points[a], b_c = points[b];
 			a_c -= o_coords;
@@ -64,23 +64,23 @@ void DelaunayTriangulation::AngularSort(std::vector<unsigned>& pts, unsigned ori
 	pts.insert(pts.end(), lower.begin(), lower.end());
 }
 
-void DelaunayTriangulation::AddEdge(unsigned x, unsigned y)
+void DelaunayTriangulation::AddEdge(uint32_t x, uint32_t y)
 {
 	neighbours[x].insert(y);
 	neighbours[y].insert(x);
 }
 
-void DelaunayTriangulation::RemoveEdge(unsigned x, unsigned y)
+void DelaunayTriangulation::RemoveEdge(uint32_t x, uint32_t y)
 {
 	neighbours[x].erase(y);
 	neighbours[y].erase(x);
 }
 
-std::vector<unsigned> DelaunayTriangulation::ConvexHull(unsigned a, unsigned b)
+std::vector<uint32_t> DelaunayTriangulation::ConvexHull(uint32_t a, uint32_t b)
 {
-	std::vector<unsigned> result;
+	std::vector<uint32_t> result;
 	result.push_back(a);
-	for (unsigned v = a+1; v < b; ++v)
+	for (uint32_t v = a+1; v < b; ++v)
 	{
 		while (result.size() > 1)
 			if (DotProduct(
@@ -91,7 +91,7 @@ std::vector<unsigned> DelaunayTriangulation::ConvexHull(unsigned a, unsigned b)
 				break;
 		result.push_back(v);
 	}
-	for (unsigned v = b-2; v >= a; --v)
+	for (uint32_t v = b-2; v >= a; --v)
 	{
 		while (result.size() > 1)
 		{
@@ -110,23 +110,23 @@ std::vector<unsigned> DelaunayTriangulation::ConvexHull(unsigned a, unsigned b)
 	return std::move(result);
 }
 
-void DelaunayTriangulation::Delaunay(unsigned a, unsigned b)
+void DelaunayTriangulation::Delaunay(uint32_t a, uint32_t b)
 {
 	if (b - a < 4)
 	{
-		for (unsigned v1 = a; v1 != b; ++v1)
-			for (unsigned v2 = v1+1; v2 != b; ++v2)
+		for (uint32_t v1 = a; v1 != b; ++v1)
+			for (uint32_t v2 = v1+1; v2 != b; ++v2)
 				DelaunayTriangulation::AddEdge(v1, v2);
 		return;
 	}
 
-	unsigned mid = (a+b)/2;
+	uint32_t mid = (a+b)/2;
 	DelaunayTriangulation::Delaunay(a, mid);
 	DelaunayTriangulation::Delaunay(mid, b);
 
-	std::vector<unsigned> hull = DelaunayTriangulation::ConvexHull(a, b);
-	unsigned left = 0, right = 0;
-	for (unsigned v = 0; v < hull.size()-1; ++v)
+	std::vector<uint32_t> hull = DelaunayTriangulation::ConvexHull(a, b);
+	uint32_t left = 0, right = 0;
+	for (uint32_t v = 0; v < hull.size()-1; ++v)
 	{
 		if (hull[v] < mid && hull[v+1] >= mid)
 		{
@@ -146,22 +146,22 @@ void DelaunayTriangulation::Delaunay(unsigned a, unsigned b)
 	bool finished_triangulation = false;
 	do
 	{
-		unsigned l_candidate = -1, r_candidate = -1;
+		uint32_t l_candidate = -1, r_candidate = -1;
 
 		// find left candidate
-		std::vector<unsigned> current_neighbours;
+		std::vector<uint32_t> current_neighbours;
 		for (auto v: neighbours[left])
 			current_neighbours.push_back(v);
 		DelaunayTriangulation::AngularSort(current_neighbours, left);
 		std::reverse(current_neighbours.begin(), current_neighbours.end());
-		std::vector<unsigned>::iterator it;
+		std::vector<uint32_t>::iterator it;
 		for (it = current_neighbours.begin(); it != current_neighbours.end(); ++it)
 			if (*it == right)
 			{
 				std::rotate(current_neighbours.begin(), it, current_neighbours.end());
 				break;
 			}
-		for (unsigned v = 1; v < current_neighbours.size() - 1; ++v)
+		for (uint32_t v = 1; v < current_neighbours.size() - 1; ++v)
 		{
 			if (DotProduct(points[right] - points[left],
 				points[current_neighbours[v]] - points[left]) < 0)
@@ -191,7 +191,7 @@ void DelaunayTriangulation::Delaunay(unsigned a, unsigned b)
 				std::rotate(current_neighbours.begin(), it, current_neighbours.end());
 				break;
 			}
-		for (unsigned v = 1; v < current_neighbours.size() - 1; ++v)
+		for (uint32_t v = 1; v < current_neighbours.size() - 1; ++v)
 		{
 			if (DotProduct(points[left] - points[right],
 				points[current_neighbours[v]] - points[right]) > 0)
@@ -254,14 +254,29 @@ void DelaunayTriangulation::Compute()
 		});
 
 	neighbours.clear();
-	for (unsigned v = 0; v < points.size(); ++v)
-		neighbours.emplace_back();
+	for (uint32_t v = 0; v < points.size(); ++v)
+		// this does not compile - however, lambdas without capturing do
+		// the problem _may_be_ in fact that it's not stateless, but I'm
+		// not sure ATM
+		// probably to fix later
+		neighbours.emplace_back([this, v](uint32_t a, uint32_t b){
+			sf::Vector2f a_c = points[a], b_c = points[b], o_c = points[v];
+			a_c -= o_c;
+			b_c -= o_c;
+
+			if ((a_c.y < 0 && b_c.y >= 0) ||
+				(a_c.y == 0 && b_c.y == 0 &&
+				a_c.x < 0 && b_c.x >= 0))
+					return true;
+
+			return DotProduct(a_c, b_c) > 0;
+		});
 	// Compute neighbours
 	DelaunayTriangulation::Delaunay(0, points.size());
 
 	std::vector<Triangle> result;
-	std::vector<unsigned> current_neighbours;
-	for (unsigned v = 0; v < points.size(); ++v)
+	std::vector<uint32_t> current_neighbours;
+	for (uint32_t v = 0; v < points.size(); ++v)
 	{
 		current_neighbours.clear();
 		for (auto x: neighbours[v])
@@ -277,7 +292,7 @@ void DelaunayTriangulation::Compute()
 				logger->Log(Logger::LogLevel::Debug) <<std::setprecision(20) <<std::fixed << "p = (" << p.x << ", " << p.y << ")";
 			throw "A point in DelaunayTriangulation is not in a triangle";
 		}
-		for (unsigned x = 0; x < current_neighbours.size(); ++x)
+		for (uint32_t x = 0; x < current_neighbours.size(); ++x)
 			if (current_neighbours[x] > v && current_neighbours[x+1] > v &&
 				neighbours[current_neighbours[x]].find(current_neighbours[x+1])
 				!= neighbours[current_neighbours[x]].end())
@@ -286,7 +301,7 @@ void DelaunayTriangulation::Compute()
 					points[current_neighbours[x]]);
 			}
 
-		unsigned n = current_neighbours.size() - 1;
+		uint32_t n = current_neighbours.size() - 1;
 		if (n > 1 && current_neighbours[0] > v && current_neighbours[n] > v &&
 			neighbours[current_neighbours[n]].find(current_neighbours[0])
 			!= neighbours[current_neighbours[n]].end())
