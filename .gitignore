@@ -6,3 +6,4 @@ tup/
 release/
 test_feature/
 test.cc
+peda-session-*.txt
