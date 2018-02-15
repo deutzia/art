@@ -68,14 +68,13 @@ private:
 	uint32_t computation_timestamp;
 protected:
 	std::string name;
-	Logger* logger;
 	virtual void Compute() = 0;
 	template <typename Type>
 	void SetData(Output<Type>* _out, Type data)
 	{
 		if (_out->parent != this)
 		{
-			logger->Log(Logger::LogLevel::Error)<<"Writing on other's output";
+			logger.Log(Logger::LogLevel::Error)<<"Writing on other's output";
 			throw "Writing on other's output";
 		}
 		_out->SetData(data);
@@ -84,9 +83,9 @@ protected:
 public:
 	void ManualUpdate(uint32_t time = GlobalTimestamp());
 	static bool multithreading;
-	Block(std::string _name, Logger* _logger)
+	static Logger logger;
+	Block(std::string _name)
 	: name(_name)
-	, logger(_logger)
 	, visit_timestamp(0)
 	, computation_timestamp(0)
 	{};
@@ -153,7 +152,7 @@ void Input<Type>::Update(uint32_t time)
 {
 	if (out == nullptr)
 	{
-		parent->logger->Log(Logger::LogLevel::Error)
+		parent->logger.Log(Logger::LogLevel::Error)
 			<<"Updating input not connected to any output";
 		throw "Updating input not connected to any output";
 	}
@@ -193,7 +192,7 @@ Type Input<Type>::GetData()
 {
 	if (out == nullptr)
 	{
-		parent->logger->Log(Logger::LogLevel::Error)
+		parent->logger.Log(Logger::LogLevel::Error)
 			<<"getting data from input not connected to any output";
 		throw "getting data from input not connected to any output";
 	}

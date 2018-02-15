@@ -3,8 +3,6 @@
 
 void RandomTriangles::Compute()
 {
-	logger->Enter("Computing Block RandomTriangles");
-
 	int iterations = in_iterations->GetData();
 	sf::Vector2u size = in_size->GetData();
 	int x = size.x;
@@ -54,12 +52,10 @@ void RandomTriangles::Compute()
 	for (Triangle &triangle: triangle_list)
 		triangle_vector.push_back(triangle);
 	SetData(out_triangles, triangle_vector);
-
-    logger->Exit();
 }
 
-RandomTriangles::RandomTriangles(std::string _name, Logger* _logger)
-: Block(_name, _logger)
+RandomTriangles::RandomTriangles(std::string _name)
+: Block(_name)
 {
 	in_iterations = new Input<int>(this);
 	in_size = new Input<sf::Vector2u>(this);

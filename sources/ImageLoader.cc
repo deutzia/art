@@ -2,21 +2,19 @@
 
 void ImageLoader::Compute()
 {
-	logger->Enter("Computing Block ImageLoader");
 	sf::Texture texture;
 	if (!texture.loadFromFile(in_file->GetData()))
 	{
 		std::string msg = "Failed to open file " + in_file->GetData();
-		logger->Log(Logger::LogLevel::Error) << msg;
+		logger.LogE() << msg;
 		throw msg;
 	}
 	SetData(out_size, texture.getSize());
 	SetData(out_texture, std::move(texture));
-	logger->Exit();
 }
 
-ImageLoader::ImageLoader(std::string _name, Logger* _logger)
-: Block(_name, _logger)
+ImageLoader::ImageLoader(std::string _name)
+: Block(_name)
 {
 	in_file = new Input<std::string>(this);
 	out_texture = new Output<sf::Texture>(this);

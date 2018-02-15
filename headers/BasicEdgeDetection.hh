@@ -26,5 +26,5 @@ protected:
 	virtual void Compute() override;
 
 public:
-	BasicEdgeDetection(std::string _name, Logger*  _logger);
+	BasicEdgeDetection(std::string _name);
 };

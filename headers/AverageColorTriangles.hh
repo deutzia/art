@@ -31,5 +31,5 @@ public:
 protected:
 	virtual void Compute() override;
 public:
-	AverageColorTriangles(std::string _name, Logger* _logger);
+	AverageColorTriangles(std::string _name);
 };

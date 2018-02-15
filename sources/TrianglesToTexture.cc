@@ -2,8 +2,6 @@
  
 void TrianglesToTexture::Compute()
 {
-	logger->Enter("Computing Block TrianglesToTexture");
- 
 	sf::Vector2u size = in_size->GetData();
 	std::vector<Triangle> triangles = in_triangles->GetData();
  
@@ -16,12 +14,10 @@ void TrianglesToTexture::Compute()
  
 	render_texture.display(); // This fixes upside down textures
 	SetData(out_texture, render_texture.getTexture());
- 
-	logger->Exit();
 }
  
-TrianglesToTexture::TrianglesToTexture(std::string _name, Logger* _logger)
-: Block(_name, _logger)
+TrianglesToTexture::TrianglesToTexture(std::string _name)
+: Block(_name)
 {
 	in_triangles = new Input<std::vector<Triangle>>(this);
 	in_size = new Input<sf::Vector2u>(this);

@@ -22,8 +22,6 @@ uint32_t BasicEdgeDetection::DifferencesFromNeighbours(int x, int y)
 
 void BasicEdgeDetection::Compute()
 {
-	logger->Enter("Computing Block BasicEdgeDetection");
-
 	sf::Texture texture = in_texture->GetData();
 	size = texture.getSize();
 	image = texture.copyToImage();
@@ -43,12 +41,10 @@ void BasicEdgeDetection::Compute()
 			values[x][y] = DifferencesFromNeighbours(x, y);
 
 	SetData(out_values, std::move(values));
-
-	logger->Exit();
 }
 
-BasicEdgeDetection::BasicEdgeDetection(std::string _name, Logger* _logger)
-: Block(_name, _logger)
+BasicEdgeDetection::BasicEdgeDetection(std::string _name)
+: Block(_name)
 {
 	in_texture = new Input<sf::Texture>(this);
 	out_values = new Output<std::vector<std::vector<uint32_t>>>(this);

@@ -21,5 +21,5 @@ protected:
 	virtual void Compute() override;
 
 public:
-	HilbertCurvePoints(std::string _name, Logger*  _logger);
+	HilbertCurvePoints(std::string _name);
 };

@@ -21,5 +21,5 @@ protected:
 	virtual void Compute() override;
 	
 public:
-	RandomTriangles(std::string _name, Logger*  _logger);
+	RandomTriangles(std::string _name);
 };

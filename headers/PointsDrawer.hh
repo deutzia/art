@@ -12,5 +12,5 @@ public:
 protected:
 	virtual void Compute() override;
 public:
-	PointsDrawer(std::string _name, Logger* _logger);
+	PointsDrawer(std::string _name);
 };

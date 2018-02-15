@@ -22,8 +22,6 @@ sf::Vector2f HilbertCurvePoints::CoordsFromDist(uint32_t s, int n)
 
 void HilbertCurvePoints::Compute()
 {
-	logger->Enter("Computing Block HilbertCurvePoints");
-
 	sf::Vector2u size = in_size->GetData();
 	std::vector<sf::Vector2f> points;
 	std::vector<std::vector<uint32_t>> values = in_values->GetData();
@@ -33,7 +31,7 @@ void HilbertCurvePoints::Compute()
 	while (n < 16 && (1u << n) < s)
 		n++;
 
-	logger->LogV() << "Generating Hilbert Curve of order " << n;
+	logger.LogV() << "Generating Hilbert Curve of order " << n;
 
 	double hil_size = (1 << n);
 	double multiplier_x = size.x / hil_size;
@@ -48,7 +46,7 @@ void HilbertCurvePoints::Compute()
 
 	// place points along the curve when details are detected
 	sum = 0;
-	auto prog = logger->InitializeProgress(
+	auto prog = logger.InitializeProgress(
 		Logger::LogLevel::Verbose, 0, (1u << (2*n)));
 	for (uint32_t i = 0; i < (1u << (2*n)); ++i)
 	{
@@ -65,12 +63,10 @@ void HilbertCurvePoints::Compute()
 	}
 
 	SetData(out_points, std::move(points));
-
-	logger->Exit();
 }
 
-HilbertCurvePoints::HilbertCurvePoints(std::string _name, Logger* _logger)
-: Block(_name, _logger)
+HilbertCurvePoints::HilbertCurvePoints(std::string _name)
+: Block(_name)
 {
 	in_size = new Input<sf::Vector2u>(this);
 	in_values = new Input<std::vector<std::vector<uint32_t>>>(this);

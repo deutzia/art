@@ -11,5 +11,5 @@ public:
 protected:
 	virtual void Compute() override;
 public:
-	ImageSaver(std::string _name, Logger*  _logger);
+	ImageSaver(std::string _name);
 };

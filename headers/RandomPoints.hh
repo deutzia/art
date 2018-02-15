@@ -13,5 +13,5 @@ public:
 protected:
 	virtual void Compute() override;
 public:
-	RandomPoints(std::string _name, Logger* _logger);
+	RandomPoints(std::string _name);
 };

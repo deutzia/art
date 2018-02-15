@@ -205,8 +205,6 @@ void DelaunayTriangulation::Delaunay(uint32_t a, uint32_t b)
 
 void DelaunayTriangulation::Compute()
 {
-	logger->Enter("Computing Block DelaunayTriangulation");
-
 	points.clear();
 	points = in_points->GetData();
 	std::sort(points.begin(), points.end(),
@@ -251,10 +249,10 @@ void DelaunayTriangulation::Compute()
 		// assumption: every vertex has at least 2 neighbours
 		if (current_neighbours.size() < 2)
 		{
-			logger->Log(Logger::LogLevel::Error) <<"A point in DelaunayTriangulation is not in a triangle";
+			logger.LogE() <<"A point in DelaunayTriangulation is not in a triangle";
 			//Debug:
 			for(auto p : points)
-				logger->Log(Logger::LogLevel::Debug) <<std::setprecision(20) <<std::fixed << "p = (" << p.x << ", " << p.y << ")";
+				logger.LogD() <<std::setprecision(20) <<std::fixed << "p = (" << p.x << ", " << p.y << ")";
 		}
 
 		uint32_t n = current_neighbours.size() - 1;
@@ -277,11 +275,10 @@ void DelaunayTriangulation::Compute()
 	}
 
 	SetData(out_triangles, std::move(result));
-	logger->Exit();
 }
 
-DelaunayTriangulation::DelaunayTriangulation(std::string _name, Logger* _logger)
-: Block(_name, _logger)
+DelaunayTriangulation::DelaunayTriangulation(std::string _name)
+: Block(_name)
 {
 	in_points = new Input<std::vector<sf::Vector2f>>(this);
 	out_triangles = new Output<std::vector<Triangle>>(this);

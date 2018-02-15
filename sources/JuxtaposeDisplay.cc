@@ -2,7 +2,6 @@
 
 void JuxtaposeDisplay::Compute()
 {
-	logger->Enter("Computing Block JuxtaposeDisplay");
 	sf::Texture texture_l = in_texture_left->GetData();
 	sf::Texture texture_r = in_texture_right->GetData();
 
@@ -13,7 +12,7 @@ void JuxtaposeDisplay::Compute()
 		err_msg << "Texture dimensions do not match: left = " <<
 			texture_l.getSize().x << "x" << texture_l.getSize().y << ", right = " << 
 			texture_r.getSize().x << "x" << texture_r.getSize().y; 
-		logger->LogE() << err_msg.str();
+		logger.LogE() << err_msg.str();
 		throw err_msg.str();
 	}
 
@@ -21,8 +20,8 @@ void JuxtaposeDisplay::Compute()
 		sf::VideoMode::getDesktopMode().width, 
 		sf::VideoMode::getDesktopMode().height };
 
-	logger->LogV() << "Texture dimensions: " << texture_size.x << "x" << texture_size.y << "px";
-	logger->LogV() << "Screen dimensions: " << screen_size.x << "x" << screen_size.y << "px";
+	logger.LogV() << "Texture dimensions: " << texture_size.x << "x" << texture_size.y << "px";
+	logger.LogV() << "Screen dimensions: " << screen_size.x << "x" << screen_size.y << "px";
 	
 	// Limit the window size by resizing the textures
 	float window_to_screen_ratio = std::max( 
@@ -31,12 +30,12 @@ void JuxtaposeDisplay::Compute()
 	if (window_to_screen_ratio > MAX_SCREEN_COVERAGE)
 	{
 		float scale = MAX_SCREEN_COVERAGE * (1. / window_to_screen_ratio);
-		logger->LogI() << "Scaling oversized texture down by " << (1. - scale) * 100. << " percent";
+		logger.LogI() << "Scaling oversized texture down by " << (1. - scale) * 100. << " percent";
 		texture_l = ScaleTexture(texture_l, scale);
 		texture_r = ScaleTexture(texture_r, scale);
 
 		texture_size = texture_l.getSize();
-		logger->LogV() << "New texture dimensions: " << texture_size.x << "x" << texture_size.y << "px";
+		logger.LogV() << "New texture dimensions: " << texture_size.x << "x" << texture_size.y << "px";
 	}
 
 	sf::RenderWindow window(
@@ -73,11 +72,10 @@ void JuxtaposeDisplay::Compute()
 		window.draw(sprite_r);
 		window.display();
 	}
-	logger->Exit();
 }
 
-JuxtaposeDisplay::JuxtaposeDisplay(std::string _name, Logger* _logger)
-: Block(_name, _logger)
+JuxtaposeDisplay::JuxtaposeDisplay(std::string _name)
+: Block(_name)
 {
 	in_texture_left = new Input<sf::Texture>(this);
 	in_texture_right = new Input<sf::Texture>(this);

@@ -103,8 +103,8 @@ void SideBySideCompare<x_num, y_num>::Compute()
 }
 
 template<uint32_t x_num, uint32_t y_num>
-SideBySideCompare<x_num, y_num>::SideBySideCompare(std::string _name, Logger* _logger)
-: Block(_name, _logger)
+SideBySideCompare<x_num, y_num>::SideBySideCompare(std::string _name)
+: Block(_name)
 {
 	in_size = new Input<sf::Vector2u>(this);
 

@@ -14,5 +14,5 @@ protected:
 	virtual void Compute() override;
 
 public:
-	PolylineToTexture(std::string _name, Logger* _logger);
+	PolylineToTexture(std::string _name);
 };
