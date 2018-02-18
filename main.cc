@@ -1,3 +1,4 @@
+#include <X11/Xlib.h>
 #include "AverageColorTriangles.hh"
 #include "DelaunayTriangulation.hh"
 #include "ImageDrawer.hh"
@@ -13,6 +14,8 @@
 
 int main(int argc, char* argv[])
 {
+	XInitThreads();
+	
 	Logger logger;
 	logger.SetLoggerLevel(Logger::LogLevel::Debug);
 	if (argc != 2)
