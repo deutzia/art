@@ -26,5 +26,5 @@ private:
 protected:
 	virtual void Compute() override;
 public:
-	DelaunayTriangulation(std::string _name, Logger* _logger);
+	DelaunayTriangulation(std::string _name);
 };

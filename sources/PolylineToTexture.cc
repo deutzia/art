@@ -2,8 +2,6 @@
 
 void PolylineToTexture::Compute()
 {
-	logger->Enter("Computing Block PolylineToTexture");
-
 	std::vector<sf::Vector2f> points = in_points->GetData();
 	sf::VertexArray lines(sf::LineStrip, points.size());
 
@@ -22,12 +20,10 @@ void PolylineToTexture::Compute()
 
 	render_texture.display(); // This fixes upside down textures
 	SetData(out_texture, render_texture.getTexture());
-
-	logger->Exit();
 }
 
-PolylineToTexture::PolylineToTexture(std::string _name, Logger* _logger)
-: Block(_name, _logger)
+PolylineToTexture::PolylineToTexture(std::string _name)
+: Block(_name)
 {
 	in_points = new Input<std::vector<sf::Vector2f>>(this);
 	in_size = new Input<sf::Vector2u>(this);

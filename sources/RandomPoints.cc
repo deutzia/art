@@ -13,7 +13,6 @@ public:
 
 void RandomPoints::Compute()
 {
-	logger->Enter("Computing Block RandomPoints");
 	sf::Vector2u bounds = in_size->GetData();
 	std::set<sf::Vector2f, cmp> result;
 	result.emplace(0, 0);
@@ -33,11 +32,10 @@ void RandomPoints::Compute()
 	for (auto p: result)
 		result_vector.push_back(p);
 	SetData(out_points, std::move(result_vector));
-	logger->Exit();
 }
 
-RandomPoints::RandomPoints(std::string _name, Logger* _logger)
-: Block(_name, _logger)
+RandomPoints::RandomPoints(std::string _name)
+: Block(_name)
 {
 	in_size = new Input<sf::Vector2u>(this);
 	out_points = new Output<std::vector<sf::Vector2f>>(this);

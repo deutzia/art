@@ -14,5 +14,5 @@ public:
 protected:
 	virtual void Compute() override;
 public:
-	MassCenterColorTriangles(std::string _name, Logger* _logger);
+	MassCenterColorTriangles(std::string _name);
 };

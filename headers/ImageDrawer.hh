@@ -19,5 +19,5 @@ public:
 protected:
 	virtual void Compute() override;
 public:
-	ImageDrawer(std::string _name, Logger* _logger);
+	ImageDrawer(std::string _name);
 };

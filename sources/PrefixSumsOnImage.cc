@@ -2,7 +2,6 @@
 
 void PrefixSumsOnImage::Compute()
 {
-	logger->Enter("Computing Block PrefixSumsOnImage");
 	sf::Texture texture = in_texture->GetData();
 	sf::Image image = texture.copyToImage();
 	sf::Vector2u size = image.getSize();
@@ -21,11 +20,10 @@ void PrefixSumsOnImage::Compute()
 			result[i].emplace_back(result[i][j-1] + image.getPixel(i, j));
 	}
 	SetData(out_array, std::move(result));
-	logger->Exit();
 }
     
-PrefixSumsOnImage::PrefixSumsOnImage(std::string _name, Logger* _logger)
-: Block(_name, _logger)
+PrefixSumsOnImage::PrefixSumsOnImage(std::string _name)
+: Block(_name)
 {
 	in_texture = new Input<sf::Texture>(this);
 	out_array = new Output<std::vector<std::vector<ColorPrefix>>>(this);

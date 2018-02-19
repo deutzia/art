@@ -22,5 +22,5 @@ public:
 protected:
 	virtual void Compute() override;
 public:
-	JuxtaposeDisplay(std::string _name, Logger* _logger);
+	JuxtaposeDisplay(std::string _name);
 };

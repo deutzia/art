@@ -115,7 +115,7 @@ void AverageColorTriangles::RecolorTriangle(
 		// Make sure the edge case is fixed
 		if (pixels_inside == 0)
 		{
-			logger->LogE() << "RecolorTriangle: Empty triangle: " <<
+			logger.LogE() << "RecolorTriangle: Empty triangle: " <<
 		 		"(" << a.x << "," << a.y << ")," <<
 		 		"(" << b.x << "," << b.y << ")," <<
 		 		"(" << c.x << "," << c.y << ")";
@@ -126,7 +126,7 @@ void AverageColorTriangles::RecolorTriangle(
 	color_sum /= pixels_inside;
 
 	if (color_sum.r > 255 || color_sum.g > 255 || color_sum.b > 255 || color_sum.a > 255)
-		logger->LogE() << "RecolorTriangle: Invalid color" << 
+		logger.LogE() << "RecolorTriangle: Invalid color" << 
 			": r = " << color_sum.r << 
 			", g = " << color_sum.g << 
 			", b = " << color_sum.b << 
@@ -138,8 +138,6 @@ void AverageColorTriangles::RecolorTriangle(
 
 void AverageColorTriangles::Compute()
 {
-	logger->Enter("Computing Block AverageColorTriangles");
-
 	std::vector<std::vector<ColorPrefix>> color_prefix = in_color_prefix->GetData();
 	std::vector<Triangle> triangles = in_triangles->GetData();
 
@@ -147,12 +145,10 @@ void AverageColorTriangles::Compute()
 		RecolorTriangle(triangle, color_prefix);
 
 	SetData(out_triangles, std::move(triangles));
-
-	logger->Exit();
 }
     
-AverageColorTriangles::AverageColorTriangles(std::string _name, Logger* _logger)
-: Block(_name, _logger)
+AverageColorTriangles::AverageColorTriangles(std::string _name)
+: Block(_name)
 {
 	in_color_prefix = new Input<std::vector<std::vector<ColorPrefix>>>(this);
 	in_triangles = new Input<std::vector<Triangle>>(this);

@@ -24,5 +24,5 @@ protected:
 	virtual void Compute() override;
 
 public:
-	TrianglesToTexture(std::string _name, Logger*  _logger);
+	TrianglesToTexture(std::string _name);
 };

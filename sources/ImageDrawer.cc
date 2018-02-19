@@ -2,7 +2,6 @@
 
 void ImageDrawer::Compute()
 {
-	logger->Enter("Computing Block ImageDrawer");
 	sf::Texture texture = in_texture->GetData();
 	sf::Sprite sprite;
 	sprite.setTexture(texture);
@@ -12,9 +11,9 @@ void ImageDrawer::Compute()
 		sf::VideoMode::getDesktopMode().width, 
 		sf::VideoMode::getDesktopMode().height };
 
-	logger->Log(Logger::LogLevel::Verbose) << "Image dimensions: " <<
+	logger.LogV() << "Image dimensions: " <<
 		image_size.x << "x" << image_size.y << "px";
-	logger->Log(Logger::LogLevel::Verbose) << "Screen dimensions: " <<
+	logger.LogV() << "Screen dimensions: " <<
 		screen_size.x << "x" << screen_size.y << "px";
 
 	// Limit the window size (without scaling the texture)
@@ -24,7 +23,7 @@ void ImageDrawer::Compute()
 	if( window_to_screen_ratio > MAX_SCREEN_COVERAGE )
 	{
 		float scale = MAX_SCREEN_COVERAGE * (1. / window_to_screen_ratio);
-		logger->Log(Logger::LogLevel::Info) << 
+		logger.LogI() << 
 			"Scaling oversized image down by " << 
 			(1. - scale) * 100. << " percent";
 		
@@ -32,7 +31,7 @@ void ImageDrawer::Compute()
 			uint32_t(image_size.x * scale), 
 			uint32_t(image_size.y * scale) };
 		sprite.setScale(scale, scale);
-		logger->Log(Logger::LogLevel::Verbose) << "New image dimensions: " <<
+		logger.LogV() << "New image dimensions: " <<
 			image_size.x << "x" << image_size.y << "px";
 	}
 
@@ -53,11 +52,10 @@ void ImageDrawer::Compute()
 		window.draw(sprite);
 		window.display();
 	}
-	logger->Exit();
 }
 
-ImageDrawer::ImageDrawer(std::string _name, Logger* _logger)
-: Block(_name, _logger)
+ImageDrawer::ImageDrawer(std::string _name)
+: Block(_name)
 {
 	in_texture = new Input<sf::Texture>(this);
 }

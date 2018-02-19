@@ -2,8 +2,6 @@
 
 void MassCenterColorTriangles::Compute()
 {
-	logger->Enter("Computing Block MassCenterColorTriangles");
-
 	std::vector<Triangle> tris = in_triangles->GetData();
 	sf::Texture texture = in_texture->GetData();
 	sf::Image image = texture.copyToImage();
@@ -17,12 +15,10 @@ void MassCenterColorTriangles::Compute()
 	}
 
 	SetData(out_triangles, std::move(tris));
-
-	logger->Exit();
 }
 
-MassCenterColorTriangles::MassCenterColorTriangles(std::string _name, Logger* _logger)
-: Block(_name, _logger)
+MassCenterColorTriangles::MassCenterColorTriangles(std::string _name)
+: Block(_name)
 {
 	in_triangles = new Input<std::vector<Triangle>>(this);
 	in_texture = new Input<sf::Texture>(this);

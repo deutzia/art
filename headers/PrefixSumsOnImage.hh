@@ -11,5 +11,5 @@ public:
 protected:
 	virtual void Compute() override;
 public:
-	PrefixSumsOnImage(std::string _name, Logger* _logger);
+	PrefixSumsOnImage(std::string _name);
 };

@@ -5,11 +5,12 @@ bool Block::multithreading(false);
 #else
 bool Block::multithreading(true);
 #endif
+Logger Block::logger;
 
 void Block::Update(uint32_t time)
 {
 	visit_timestamp = time;
-	logger->Enter(name+" Block Update");
+	logger.Enter(name+" Block Update");
 	bool need_to_compute = false;
 	for (auto in: inputs)
 	{
@@ -21,19 +22,21 @@ void Block::Update(uint32_t time)
 	{
 		for (auto out: outputs)
 			out->Initialize();
+		logger.Enter("computing Block "+name);
 		if (multithreading)
 			fut = std::async(std::launch::async, &Block::Compute, this);
 		else
 			Compute();
+		logger.Exit();
 		computation_timestamp = time;
 	}
-	logger->Exit();
+	logger.Exit();
 }
 
 void Block::ManualUpdate(uint32_t time)
 {
 	visit_timestamp = time;
-	logger->Enter(name+" Block Update");
+	logger.Enter(name+" Block Update");
 	bool need_to_compute = false;
 	for (auto in: inputs)
 	{
@@ -48,5 +51,5 @@ void Block::ManualUpdate(uint32_t time)
 		Compute();
 		computation_timestamp = time;
 	}
-	logger->Exit();
+	logger.Exit();
 }
