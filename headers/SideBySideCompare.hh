@@ -23,24 +23,22 @@ public:
 protected:
 	virtual void Compute();
 public:
-	SideBySideCompare(std::string _name, Logger* _logger);
+	SideBySideCompare(std::string _name);
 
 };
 
 template<uint32_t x_num, uint32_t y_num>
 void SideBySideCompare<x_num, y_num>::Compute()
 {
-	logger->Enter("Computing Block SideBySideCompare");
-
 	sf::Vector2u size = in_size->GetData();
 
 	sf::Vector2u picture_size = {size.x * x_num, size.y * y_num};
 	sf::Vector2u screen_size = {
 		sf::VideoMode::getDesktopMode().width, 
 		sf::VideoMode::getDesktopMode().height };
-	logger->Log(Logger::LogLevel::Verbose) << "Picture dimensions: " <<
+	logger.Log(Logger::LogLevel::Verbose) << "Picture dimensions: " <<
 		picture_size.x << "x" << picture_size.y << "px";
-	logger->Log(Logger::LogLevel::Verbose) << "Screen dimensions: " <<
+	logger.Log(Logger::LogLevel::Verbose) << "Screen dimensions: " <<
 		screen_size.x << "x" << screen_size.y << "px";
 
 	// Limit the resulting texture size
@@ -51,14 +49,14 @@ void SideBySideCompare<x_num, y_num>::Compute()
 	if( window_to_screen_ratio > MAX_SCREEN_COVERAGE )
 	{
 		scale = MAX_SCREEN_COVERAGE * (1. / window_to_screen_ratio);
-		logger->Log(Logger::LogLevel::Info) << 
+		logger.Log(Logger::LogLevel::Info) << 
 			"Scaling oversized picture down by " << 
 			(1. - scale) * 100. << " percent";
 		
 		picture_size = {
 			uint32_t(picture_size.x * scale), 
 			uint32_t(picture_size.y * scale) };
-		logger->Log(Logger::LogLevel::Verbose) << "New picture dimensions: " <<
+		logger.Log(Logger::LogLevel::Verbose) << "New picture dimensions: " <<
 			picture_size.x << "x" << picture_size.y << "px";
 	}
 
@@ -66,8 +64,8 @@ void SideBySideCompare<x_num, y_num>::Compute()
 	std::array<sf::Sprite, x_num * y_num> sprites;
 	// The textures must exist as long as the sprites use them
 	std::array<sf::Texture, x_num * y_num> textures; 
-	logger->Log(Logger::LogLevel::Debug) << "Preparing textures...";
-	auto timer = logger->InitializeProgress( 
+	logger.Log(Logger::LogLevel::Debug) << "Preparing textures...";
+	auto timer = logger.InitializeProgress( 
 		Logger::LogLevel::Debug, 0, x_num * y_num );
 	for (uint32_t y = 0; y < y_num; ++y)
 	{
@@ -79,7 +77,7 @@ void SideBySideCompare<x_num, y_num>::Compute()
 			{
 				std::ostringstream errmsg;
 				errmsg << "in_textures[" << x << "][" << y << "] has wrong size";
-				logger->Log(Logger::LogLevel::Error) << errmsg.str();
+				logger.Log(Logger::LogLevel::Error) << errmsg.str();
 				throw errmsg.str();
 			}
 			textures[i] = ScaleTexture(textures[i], scale);
@@ -89,7 +87,7 @@ void SideBySideCompare<x_num, y_num>::Compute()
 			timer.Count();
 		}
 	}
-	logger->Log(Logger::LogLevel::Debug) << "Done!";
+	logger.Log(Logger::LogLevel::Debug) << "Done!";
 
 	sf::RenderTexture render_texture;
 	render_texture.create(picture_size.x, picture_size.y);
@@ -98,8 +96,6 @@ void SideBySideCompare<x_num, y_num>::Compute()
 	for (sf::Sprite &sprite: sprites)
 	 	render_texture.draw(sprite);    
 	SetData(out_texture, render_texture.getTexture());
-
-	logger->Exit();
 }
 
 template<uint32_t x_num, uint32_t y_num>
