@@ -1,6 +1,6 @@
 #include "DelaunayTriangulation.hh"
 
-float DotProduct(sf::Vector2f a, sf::Vector2f b)
+float CrossProduct(sf::Vector2f a, sf::Vector2f b)
 {
 	return a.x * b.y - a.y * b.x;
 }
@@ -45,10 +45,10 @@ std::vector<uint32_t> DelaunayTriangulation::ConvexHull(uint32_t a, uint32_t b)
 {
 	std::vector<uint32_t> result;
 	result.push_back(a);
-	for (uint32_t v = a+1; v < b; ++v)
+	for (uint32_t v = a + 1; v < b; ++v)
 	{
 		while (result.size() > 1)
-			if (DotProduct(
+			if (CrossProduct(
 				points[result[result.size()-1]] - points[result[result.size()-2]],
 				points[v] - points[result[result.size()-2]]) > 0)
 					result.pop_back();
@@ -60,7 +60,7 @@ std::vector<uint32_t> DelaunayTriangulation::ConvexHull(uint32_t a, uint32_t b)
 	{
 		while (result.size() > 1)
 		{
-			if (DotProduct(
+			if (CrossProduct(
 				points[result[result.size()-1]] - points[result[result.size()-2]],
 				points[v] - points[result[result.size()-2]]) > 0)
 					result.pop_back();
@@ -82,6 +82,13 @@ void DelaunayTriangulation::Delaunay(uint32_t a, uint32_t b)
 		for (uint32_t v1 = a; v1 != b; ++v1)
 			for (uint32_t v2 = v1 + 1; v2 != b; ++v2)
 				AddEdge(v1, v2);
+
+		// do not add edge that has third point on it
+		// assupmtion: this may happen only on y-axis - when points are
+		// placed based on Hlbert curve it should be true
+		// with random points - no three points are colinnear
+		if (points[a].x == points[b - 1].x && b - a == 3)
+			RemoveEdge(a, b - 1);
 		return;
 	}
 
@@ -128,7 +135,7 @@ void DelaunayTriangulation::Delaunay(uint32_t a, uint32_t b)
 			}
 		for (uint32_t v = 1; v < current_neighbours.size() - 1; ++v)
 		{
-			if (DotProduct(points[right] - points[left],
+			if (CrossProduct(points[right] - points[left],
 				points[current_neighbours[v]] - points[left]) < 0)
 			{
 				if (!InCircle(left, right, current_neighbours[v],
@@ -141,7 +148,7 @@ void DelaunayTriangulation::Delaunay(uint32_t a, uint32_t b)
 					RemoveEdge(left, current_neighbours[v]);
 			}
 		}
-		if (l_candidate == -1 && DotProduct(points[right] - points[left],
+		if (l_candidate == -1 && CrossProduct(points[right] - points[left],
 				points[current_neighbours[current_neighbours.size()-1]] - points[left]) < 0)
 			l_candidate = current_neighbours[current_neighbours.size()-1];
 
@@ -157,7 +164,7 @@ void DelaunayTriangulation::Delaunay(uint32_t a, uint32_t b)
 			}
 		for (uint32_t v = 1; v < current_neighbours.size() - 1; ++v)
 		{
-			if (DotProduct(points[left] - points[right],
+			if (CrossProduct(points[left] - points[right],
 				points[current_neighbours[v]] - points[right]) > 0)
 			{
 				if (!InCircle(left, right, current_neighbours[v],
@@ -171,7 +178,7 @@ void DelaunayTriangulation::Delaunay(uint32_t a, uint32_t b)
 			}
 		}
 		//check last vertex
-		if (r_candidate == -1 && DotProduct(points[left] - points[right],
+		if (r_candidate == -1 && CrossProduct(points[left] - points[right],
 				points[current_neighbours[current_neighbours.size()-1]] - points[right]) > 0)
 			r_candidate = current_neighbours[current_neighbours.size()-1];
 
@@ -234,7 +241,11 @@ void DelaunayTriangulation::Compute()
 				b_c.x > 0 && a_c.x <= 0))
 					return false;
 
-			return DotProduct(a_c, b_c) > 0;
+			float cross = CrossProduct(a_c, b_c);
+			if (std::abs(cross) < 0.0000001)
+				return NormSq(a_c) < NormSq(b_c);
+
+			return cross > 0;
 		});
 
 	// Compute neighbours

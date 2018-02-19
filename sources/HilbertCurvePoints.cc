@@ -39,7 +39,7 @@ void HilbertCurvePoints::Compute()
 	double multiplier_x = size.x / hil_size;
 	double multiplier_y = size.y / hil_size;
 
-	uint32_t long long sum = 0;
+	uint64_t sum = 0;
 	for (uint32_t x = 0; x < size.x; ++x)
 		for (uint32_t y = 0; y < size.y; ++y)
 			sum += values[x][y];
