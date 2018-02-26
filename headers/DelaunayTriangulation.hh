@@ -12,7 +12,7 @@ class DelaunayTriangulation: public Block
 {
 private:
 	std::vector<sf::Vector2f> points;
-	// neighbours are kept sorted clockwise
+	// neighbours are kept sorted counterclockwise
 	std::vector<std::set<uint32_t, std::function<bool(uint32_t, uint32_t)>>> neighbours;
 public:
 	Input<std::vector<sf::Vector2f>>* in_points; 

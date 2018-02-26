@@ -114,7 +114,7 @@ void DelaunayTriangulation::Delaunay(uint32_t a, uint32_t b)
 		}
 	} // left-right is a base edge, where left is in left set and right is in the right set
 	AddEdge(left, right);
-	
+
 	bool finished_triangulation = false;
 	do
 	{
@@ -125,7 +125,9 @@ void DelaunayTriangulation::Delaunay(uint32_t a, uint32_t b)
 		for (auto v: neighbours[left])
 			current_neighbours.push_back(v);
 
-		std::reverse(current_neighbours.begin(), current_neighbours.end());
+		// TODO: even though points are kept in correct order for this part, they need
+		// to be in the opposite order for the second part, so rewriting it to avoid
+		// copying points every time is not obvious
 		std::vector<uint32_t>::iterator it;
 		for (it = current_neighbours.begin(); it != current_neighbours.end(); ++it)
 			if (*it == right)
@@ -156,6 +158,7 @@ void DelaunayTriangulation::Delaunay(uint32_t a, uint32_t b)
 		current_neighbours.clear();
 		for (auto v: neighbours[right])
 			current_neighbours.push_back(v);
+		std::reverse(current_neighbours.begin(), current_neighbours.end());
 		for (it = current_neighbours.begin(); it != current_neighbours.end(); ++it)
 			if (*it == left)
 			{
@@ -229,21 +232,21 @@ void DelaunayTriangulation::Compute()
 			a_c -= o_c;
 			b_c -= o_c;
 
-			if ((a_c.y > 0 && b_c.y <= 0) ||
+			if ((a_c.y < 0 && b_c.y >= 0) ||
 				(a_c.y == 0 && b_c.y == 0 &&
-				a_c.x > 0 && b_c.x <= 0))
+				a_c.x < 0 && b_c.x >= 0))
 					return true;
 
-			if ((b_c.y > 0 && a_c.y <= 0) ||
+			if ((b_c.y < 0 && a_c.y >= 0) ||
 				(a_c.y == 0 && b_c.y == 0 &&
-				b_c.x > 0 && a_c.x <= 0))
+				b_c.x < 0 && a_c.x >= 0))
 					return false;
 
 			float cross = CrossProduct(a_c, b_c);
-			if (std::abs(cross) < 0.0000001)
+			if (std::abs(cross) < 0.0000000001)
 				return NormSq(a_c) < NormSq(b_c);
 
-			return cross > 0;
+			return cross < 0;
 		});
 
 	// Compute neighbours
