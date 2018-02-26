@@ -32,38 +32,18 @@ void SideBySideCompare<x_num, y_num>::Compute()
 {
 	sf::Vector2u size = in_size->GetData();
 
-	sf::Vector2u picture_size = {size.x * x_num, size.y * y_num};
 	sf::Vector2u screen_size = {
 		sf::VideoMode::getDesktopMode().width, 
 		sf::VideoMode::getDesktopMode().height };
-	logger.Log(Logger::LogLevel::Verbose) << "Picture dimensions: " <<
-		picture_size.x << "x" << picture_size.y << "px";
-	logger.Log(Logger::LogLevel::Verbose) << "Screen dimensions: " <<
-		screen_size.x << "x" << screen_size.y << "px";
-
-	// Limit the resulting texture size
-	float window_to_screen_ratio = std::max( 
-		float(picture_size.x) / screen_size.x,
-		float(picture_size.y) / screen_size.y );
-	float scale = 1.;
-	if( window_to_screen_ratio > MAX_SCREEN_COVERAGE )
-	{
-		scale = MAX_SCREEN_COVERAGE * (1. / window_to_screen_ratio);
-		logger.Log(Logger::LogLevel::Info) << 
-			"Scaling oversized picture down by " << 
-			(1. - scale) * 100. << " percent";
-		
-		picture_size = {
-			uint32_t(picture_size.x * scale), 
-			uint32_t(picture_size.y * scale) };
-		logger.Log(Logger::LogLevel::Verbose) << "New picture dimensions: " <<
-			picture_size.x << "x" << picture_size.y << "px";
-	}
+	sf::Vector2u max_size = {
+		uint32_t(MAX_SCREEN_COVERAGE * screen_size.x / x_num),
+		uint32_t(MAX_SCREEN_COVERAGE * screen_size.y / y_num) };
 
 	// The 2D array is stored in a 1D array instead
 	std::array<sf::Sprite, x_num * y_num> sprites;
 	// The textures must exist as long as the sprites use them
 	std::array<sf::Texture, x_num * y_num> textures; 
+
 	logger.Log(Logger::LogLevel::Debug) << "Preparing textures...";
 	auto timer = logger.InitializeProgress( 
 		Logger::LogLevel::Debug, 0, x_num * y_num );
@@ -80,15 +60,20 @@ void SideBySideCompare<x_num, y_num>::Compute()
 				logger.Log(Logger::LogLevel::Error) << errmsg.str();
 				throw errmsg.str();
 			}
-			textures[i] = ScaleTexture(textures[i], scale);
+			textures[i] = LimitTextureSize(textures[i], max_size);
+			sf::Vector2u texture_size = textures[i].getSize();
 
 			sprites[i].setTexture(textures[i]);
-			sprites[i].setPosition(x * size.x * scale, y * size.y * scale);
+			sprites[i].setPosition(x * texture_size.x, y * texture_size.y);
 			timer.Count();
 		}
 	}
 	logger.Log(Logger::LogLevel::Debug) << "Done!";
 
+	sf::Vector2u texture_size = textures[0].getSize();
+	sf::Vector2u picture_size = {
+		texture_size.x * x_num, 
+		texture_size.y * y_num };
 	sf::RenderTexture render_texture;
 	render_texture.create(picture_size.x, picture_size.y);
 	render_texture.clear();
