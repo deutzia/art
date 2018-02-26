@@ -16,27 +16,9 @@ void JuxtaposeDisplay::Compute()
 		throw err_msg.str();
 	}
 
-	sf::Vector2u screen_size = {
-		sf::VideoMode::getDesktopMode().width, 
-		sf::VideoMode::getDesktopMode().height };
-
-	logger.LogV() << "Texture dimensions: " << texture_size.x << "x" << texture_size.y << "px";
-	logger.LogV() << "Screen dimensions: " << screen_size.x << "x" << screen_size.y << "px";
-	
-	// Limit the window size by resizing the textures
-	float window_to_screen_ratio = std::max( 
-		float(texture_size.x) / screen_size.x,
-		float(texture_size.y) / screen_size.y );
-	if (window_to_screen_ratio > MAX_SCREEN_COVERAGE)
-	{
-		float scale = MAX_SCREEN_COVERAGE * (1. / window_to_screen_ratio);
-		logger.LogI() << "Scaling oversized texture down by " << (1. - scale) * 100. << " percent";
-		texture_l = ScaleTexture(texture_l, scale);
-		texture_r = ScaleTexture(texture_r, scale);
-
-		texture_size = texture_l.getSize();
-		logger.LogV() << "New texture dimensions: " << texture_size.x << "x" << texture_size.y << "px";
-	}
+	texture_l = LimitTextureSize(in_texture_left->GetData());
+	texture_r = LimitTextureSize(in_texture_right->GetData());	
+	texture_size = texture_l.getSize();
 
 	sf::RenderWindow window(
 		sf::VideoMode(texture_size.x, texture_size.y), 

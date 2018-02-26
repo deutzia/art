@@ -8,7 +8,7 @@
  * JuxtaposeDisplay Block
  *   Displays two textures in a window, with a slider to compare them
  *   To move the slider click anywhere on the window
- *   The window's textures are scaled if the window is too large
+ *   The textures are scaled if they don't fit on screen
  *   The window has to be manually closed to continue execution
  */
 
