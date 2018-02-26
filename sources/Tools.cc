@@ -1,5 +1,32 @@
 #include "Tools.hh"
 
+sf::Texture LimitTextureSize(const sf::Texture& texture, sf::Vector2u max_size)
+{
+	sf::Vector2u texture_size = texture.getSize();
+	
+	float texture_to_max_ratio = std::max( 
+		float(texture_size.x) / max_size.x,
+		float(texture_size.y) / max_size.y );
+
+	if (texture_to_max_ratio > 1)
+		return ScaleTexture(texture, 1. / texture_to_max_ratio);
+	else
+		return texture;
+}
+
+sf::Texture LimitTextureSize(const sf::Texture& texture)
+{
+	const float MAX_SCREEN_COVERAGE = .90; // Leaves some space for window borders
+	sf::Vector2u screen_size = {
+		sf::VideoMode::getDesktopMode().width, 
+		sf::VideoMode::getDesktopMode().height };
+	sf::Vector2u max_size = { 
+		uint32_t(screen_size.x * MAX_SCREEN_COVERAGE), 
+		uint32_t(screen_size.y * MAX_SCREEN_COVERAGE)
+	};
+	return LimitTextureSize(texture, max_size);	
+}
+
 sf::Texture ScaleTexture(const sf::Texture& texture, float scale_x, float scale_y)
 {
 	sf::Sprite sprite(texture);

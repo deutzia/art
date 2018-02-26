@@ -2,6 +2,11 @@
 #include <random>
 #include <SFML/Graphics.hpp>
 
+/* Returns a texture scaled to fit max_size */
+sf::Texture LimitTextureSize(const sf::Texture& texture, sf::Vector2u max_size);
+/* Returns a texture scaled to fit the screen */
+sf::Texture LimitTextureSize(const sf::Texture&);
+
 /* Returns a scaled copy of the texture */
 sf::Texture ScaleTexture(const sf::Texture&, float, float);
 sf::Texture ScaleTexture(const sf::Texture&, float);

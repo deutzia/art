@@ -2,18 +2,17 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 #include "Block.hh"
+#include "Tools.hh"
 
 /*
  * ImageDrawer Block
  *   Displays a texture in a window
- *   The window is scaled if it's too large (the texture itself is unmodified)
+ *   The texture is scaled if it's too large
  *   The window has to be closed manually to continue execution
  */
 
 class ImageDrawer: public Block
 {
-	// Limits the size of the window
-	const float MAX_SCREEN_COVERAGE = .90;
 public:
 	Input<sf::Texture>* in_texture;
 protected:
