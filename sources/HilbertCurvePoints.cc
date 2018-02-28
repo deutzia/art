@@ -62,6 +62,12 @@ void HilbertCurvePoints::Compute()
 		prog.Count();
 	}
 
+	// add points on bounds of image
+	points.push_back({size.x - 1, 0});
+	points.push_back({size.x - 1, size.y - 1});
+	points.push_back({0, size.y - 1});
+	points.push_back({0, 0});
+
 	SetData(out_points, std::move(points));
 }
 
