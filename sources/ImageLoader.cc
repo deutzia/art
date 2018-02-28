@@ -9,6 +9,7 @@ void ImageLoader::Compute()
 		logger.LogE() << msg;
 		throw msg;
 	}
+	texture = LimitTextureSize(texture);
 	SetData(out_size, texture.getSize());
 	SetData(out_texture, std::move(texture));
 }

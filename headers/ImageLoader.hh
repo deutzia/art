@@ -1,6 +1,7 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include "Block.hh"
+#include "Tools.hh"
 
 class ImageLoader: public Block
 {
